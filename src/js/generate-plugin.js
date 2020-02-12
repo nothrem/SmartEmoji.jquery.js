@@ -32,8 +32,11 @@ export default function generatePlugin(pluginName, className, shortHand = false)
         const options = $.extend({}, className.DEFAULTS, $this.data(), typeof option === 'object' && option);
         $this.data(instanceName, (instance = new className(this, options)));
       }
-      else if (typeof instance.configure === 'function') {
-        instance.configure(options);
+      else { //noinspection JSUnresolvedVariable
+        if (typeof instance.configure === 'function') {
+                //noinspection JSUnresolvedFunction
+                instance.configure(options);
+              }
       }
 
       if (typeof option === 'string') {

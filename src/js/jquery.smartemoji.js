@@ -14,5 +14,6 @@ generatePlugin('smartemoji', EmojiArea);
  * call auto initialization.
  */
 $(() => {
+  //noinspection JSUnresolvedFunction
   $('[data-emojiarea]').smartemoji();
 });

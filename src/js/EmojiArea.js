@@ -171,14 +171,14 @@ export default class EmojiArea {
   }
 
   _processElement(element = this.$e) {
-    // this is a bit more complex becaue
+    // this is a bit more complex because
     //  a) only text nodes should be replaced
     //  b) the cursor position should be kept after an alias is replaced
 
     element.contents().each((i, e) => {
       if (e.nodeType === 1 || e.nodeType === 11) { // element or document fragment
         const $e = $(e);
-        if (!$e.is('.emoji')) // skip emojis
+        if (!$e.is('.emoji')) // skip emoji
         {
           this._processElement($e);
         }
@@ -197,15 +197,15 @@ export default class EmojiArea {
         if (parsed !== e.nodeValue) {
           const isSelected = (this.htmlSel && this.htmlSel.endContainer === e);
           const range = isSelected ? this.htmlSel : document.createRange();
-          const carret = this.htmlSel ? e.nodeValue.length - this.htmlSel.endOffset : 0;
+          const caret = this.htmlSel ? e.nodeValue.length - this.htmlSel.endOffset : 0;
           const next = e.nextSibling;
           range.selectNode(e);
           this.replaceSelection(parsed, range, null);
           if (isSelected) {
             if (next.previousSibling) {
               const inserted = next.previousSibling;
-              range.setStart(inserted, inserted.length - carret);
-              range.setEnd(inserted, inserted.length - carret);
+              range.setStart(inserted, inserted.length - caret);
+              range.setEnd(inserted, inserted.length - caret);
               //this.htmlSel.setStartAfter(content[content.length - 1]);
               //this.htmlSel.collapse(false);
             }
@@ -278,21 +278,12 @@ export default class EmojiArea {
   }
 
   static generateEmojiTag(unicode, alias) {
+    throw new Error('CSS emoji are not supported.');
     return '<i class="emoji emoji-' + alias + '" contenteditable="false">' + unicode + '</i>';
   }
 
   static generateEmojiImg(unicode, alias, options = EmojiArea.DEFAULTS) {
-    const data = Emoji.dataFromAlias(alias, true);
-    const group = Emoji.groups[data[2]];
-    const dimensions = data[5];
-    const iconSize = options.iconSize || 25;
-
-    const style = 'background: url(\'' + options.assetPath + '/' + group.sprite + '\') '
-      + (-iconSize * data[3]) + 'px ' // data[3] = column
-      + (-iconSize * data[4]) + 'px no-repeat; ' // data[4] = row
-      + 'background-size: ' + (dimensions[0] * iconSize) + 'px ' + (dimensions[1] * iconSize) + 'px;'; // position
-
-    return '<i class="emoji emoji-' + alias + ' emoji-image" contenteditable="false"><img src="' + options.assetPath + '/blank.gif" style="' + style + '" alt="' + unicode + '" contenteditable="false"/>' + unicode + '</i>';
+    throw new Error('Image emoji are not supported.');
   }
 }
 

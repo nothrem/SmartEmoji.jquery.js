@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d195ca5a0d5d135f64b9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9360b7c92540c7307e9b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -952,7 +952,7 @@ var EmojiArea = function () {
 
       var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.$e;
 
-      // this is a bit more complex becaue
+      // this is a bit more complex because
       //  a) only text nodes should be replaced
       //  b) the cursor position should be kept after an alias is replaced
 
@@ -960,7 +960,7 @@ var EmojiArea = function () {
         if (e.nodeType === 1 || e.nodeType === 11) {
           // element or document fragment
           var $e = (0, _jquery2.default)(e);
-          if (!$e.is('.emoji')) // skip emojis
+          if (!$e.is('.emoji')) // skip emoji
             {
               _this._processElement($e);
             }
@@ -980,15 +980,15 @@ var EmojiArea = function () {
           if (parsed !== e.nodeValue) {
             var isSelected = _this.htmlSel && _this.htmlSel.endContainer === e;
             var range = isSelected ? _this.htmlSel : document.createRange();
-            var carret = _this.htmlSel ? e.nodeValue.length - _this.htmlSel.endOffset : 0;
+            var caret = _this.htmlSel ? e.nodeValue.length - _this.htmlSel.endOffset : 0;
             var next = e.nextSibling;
             range.selectNode(e);
             _this.replaceSelection(parsed, range, null);
             if (isSelected) {
               if (next.previousSibling) {
                 var inserted = next.previousSibling;
-                range.setStart(inserted, inserted.length - carret);
-                range.setEnd(inserted, inserted.length - carret);
+                range.setStart(inserted, inserted.length - caret);
+                range.setEnd(inserted, inserted.length - caret);
                 //this.htmlSel.setStartAfter(content[content.length - 1]);
                 //this.htmlSel.collapse(false);
               } else {
@@ -1068,6 +1068,7 @@ var EmojiArea = function () {
   }, {
     key: 'generateEmojiTag',
     value: function generateEmojiTag(unicode, alias) {
+      throw new Error('CSS emoji are not supported.');
       return '<i class="emoji emoji-' + alias + '" contenteditable="false">' + unicode + '</i>';
     }
   }, {
@@ -1075,16 +1076,7 @@ var EmojiArea = function () {
     value: function generateEmojiImg(unicode, alias) {
       var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : EmojiArea.DEFAULTS;
 
-      var data = _EmojiUtil2.default.dataFromAlias(alias, true);
-      var group = _EmojiUtil2.default.groups[data[2]];
-      var dimensions = data[5];
-      var iconSize = options.iconSize || 25;
-
-      var style = 'background: url(\'' + options.assetPath + '/' + group.sprite + '\') ' + -iconSize * data[3] + 'px ' // data[3] = column
-      + -iconSize * data[4] + 'px no-repeat; ' // data[4] = row
-      + 'background-size: ' + dimensions[0] * iconSize + 'px ' + dimensions[1] * iconSize + 'px;'; // position
-
-      return '<i class="emoji emoji-' + alias + ' emoji-image" contenteditable="false"><img src="' + options.assetPath + '/blank.gif" style="' + style + '" alt="' + unicode + '" contenteditable="false"/>' + unicode + '</i>';
+      throw new Error('Image emoji are not supported.');
     }
   }]);
 
@@ -1302,6 +1294,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 
 (0, _jquery2.default)(function () {
+  //noinspection JSUnresolvedFunction
   (0, _jquery2.default)('[data-emojiarea]').smartemoji();
 });
 
@@ -1359,8 +1352,12 @@ function generatePlugin(pluginName, className) {
       if (!instance && option !== 'destroy') {
         var _options = _jquery2.default.extend({}, className.DEFAULTS, $this.data(), (typeof option === 'undefined' ? 'undefined' : _typeof(option)) === 'object' && option);
         $this.data(instanceName, instance = new className(this, _options));
-      } else if (typeof instance.configure === 'function') {
-        instance.configure(options);
+      } else {
+        //noinspection JSUnresolvedVariable
+        if (typeof instance.configure === 'function') {
+          //noinspection JSUnresolvedFunction
+          instance.configure(options);
+        }
       }
 
       if (typeof option === 'string') {
