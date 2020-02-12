@@ -6,10 +6,10 @@
         <title>SmartEmoji Demo</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="./assets/css/reset.css">
-        <link rel="stylesheet" href="./assets/css/style.css">
+        <link rel="stylesheet" href="../dist/reset.css">
+        <link rel="stylesheet" href="../dist/style.css">
         <link rel="stylesheet" href="stylesheet.css">
-        <script src="./assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.min.js"></script>
         <script src="../dist/jquery.smartemoji.js"></script>
     </head>
     <body>
@@ -17,8 +17,8 @@
         <div class="example">
             <h2>Unicode with separate button</h2>
             <div data-emojiarea data-type="unicode" data-global-picker="false" data-anchor-alignment="right">
-                <textarea id="input1" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
                 <div class="emoji-button">&#x1f604;</div>
+                <textarea id="input1" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
             </div>
             <h3>Value:</h3>
             <div class="value"><pre id="value1"></pre></div>
@@ -30,7 +30,7 @@
         </div>
         <div class="example">
             <h2>Unicode with embedded button</h2>
-            <div data-emojiarea data-type="unicode" data-global-picker="false">
+            <div data-emoji-button="embed" data-emojiarea data-type="unicode" data-global-picker="false">
                 <div class="emoji-button">&#x1f604;</div>
                 <textarea id="input2" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
             </div>

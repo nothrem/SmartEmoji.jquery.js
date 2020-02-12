@@ -19,8 +19,13 @@ h1, h2, h3, h4, p, form {
     margin: 30px 0 5px 0;
 }
 
+.emoji-button {
+  float: right;
+}
+
 textarea, .emoji-editor {
     width: 100%;
+    width: calc(100% - 30px);
     height: 100px;
     border: 1px solid #d0d0d0;
     padding: 15px;
@@ -35,6 +40,20 @@ textarea, .emoji-editor {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+
+    font-family:
+        /* Fonts for regular text */
+        'Open Sans',     /* Google font Open Sans (must be loaded externally if wanted) */
+        Verdana, Geneva, /* Best fonts for texts (depending on OS) */
+        Arial, Helvetica, /* Not as good but still nice looking (available on most OS) */
+        sans-serif, /* fallback - use any sans-serif font available on your OS */
+
+        /* Fonts for Emoji (used for emoji unavailable in above fonts) */
+        "Apple Color Emoji", /* Color emoji on iOS5+ and MacOS Lion+ */
+        "Android Emoji", /* Emoji on Android 4+ */
+        "Segoe UI Semibold", /* Emoji on Windows 8+ */
+        "Noto Color Emoji", /* Free Google font with all emoji (must be loaded externally if wanted; see https://github.com/googlefonts/noto-emoji/tree/master/fonts) */
+        "LastResort"; /* Font containing all UNICODE characters' placeholders (must be loaded externally if wanted; see https://unicode.org/policies/lastresortfont_eula.html) */
 }
 
 .example {
@@ -52,9 +71,13 @@ textarea, .emoji-editor {
     position: relative;
 }
 
-[data-type="unicode"] > .emoji-button {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    user-select: none;
+[data-emoji-button="embed"] textarea {
+  width: 100%;
+}
+[data-emoji-button="embed"] .emoji-button {
+  float: none;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  user-select: none;
 }

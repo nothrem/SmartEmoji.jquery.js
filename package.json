@@ -26,7 +26,7 @@
     "babel-register": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "eslint": "^4.8.0",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.13.1",
     "uglify-js": "^3.1.3",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^3.1.11"
@@ -36,6 +36,7 @@
     "help": "echo \"please open index.html in the docs folder, automation coming soon\" && exit 1",
     "test": "echo \"please open index.html in the docs folder, automation coming soon\" && exit 1",
     "build:dist": "webpack --config=webpack.config.dist.babel.js",
+    "build:style": "node-sass --output-style compressed src/css/style.scss > dist/style.css",
     "build": "webpack"
   },
   "repository": {

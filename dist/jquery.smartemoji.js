@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9360b7c92540c7307e9b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5555db00a024cbec0657"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1088,7 +1088,7 @@ exports.default = EmojiArea;
 
 EmojiArea.DEFAULTS = {
   aliasRegex: /:([a-z0-9_]+?):/g, //deprecated, colon aliased not supported in unicode mode
-  asciiRegex: /([\/<:;=8>(][()D3opPy*>\/\\|-]+) /g, //deprecated, ascii emoji not supported (in future they may be replaced by kaomoji
+  asciiRegex: /([\/<:;=8>(][()D3opPy*>\/\\|-]+) /g,
   unicodeRegex: /((?:[\xA9\xAE\u2122\u23E9-\u23EF\u23F3\u23F8-\u23FA\u24C2\u25B6\u2600-\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDE51\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F\uDE80-\uDEFF]|\uD83E[\uDD00-\uDDFF]))/g,
   inputSelector: 'input:text, textarea',
   buttonSelector: '>.emoji-button',
