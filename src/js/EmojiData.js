@@ -882,9 +882,7 @@ const groups = [
       '1f497', '1f493', '1f495', '1f496', '1f49e', '1f498',
       '1f48c', '1f48b', '1f48d', '1f48e', '1f464', '1f465',
       '1f4ac', '1f463', '1f4ad'
-    ],
-    sprite: 'emoji_spritesheet_0.png',
-    dimensions: [27, 7],
+    ]
   },
   {
     name: 'dog',
@@ -909,9 +907,7 @@ const groups = [
       '1f30c', '1f320', '2b50', '2600', '26c5', '2601',
       '26a1', '2614', '2744', '26c4', '1f300', '1f301',
       '1f308', '1f30a'
-    ],
-    sprite: 'emoji_spritesheet_1.png',
-    dimensions: [29, 4],
+    ]
   },
   {
     name: 'bell',
@@ -955,9 +951,7 @@ const groups = [
       '1f34b', '1f352', '1f347', '1f349', '1f353', '1f351',
       '1f348', '1f34c', '1f350', '1f34d', '1f360', '1f346',
       '1f345', '1f33d'
-    ],
-    sprite: 'emoji_spritesheet_2.png',
-    dimensions: [33, 7],
+    ]
   },
   {
     name: 'car',
@@ -979,9 +973,7 @@ const groups = [
       '1f3b0', '2668', '1f5ff', '1f3aa', '1f3ad', '1f4cd',
       '1f6a9', '1f1ef-1f1f5', '1f1f0-1f1f7', '1f1e9-1f1ea', '1f1e8-1f1f3', '1f1fa-1f1f8',
       '1f1eb-1f1f7', '1f1ea-1f1f8', '1f1ee-1f1f9', '1f1f7-1f1fa', '1f1ec-1f1e7'
-    ],
-    sprite: 'emoji_spritesheet_3.png',
-    dimensions: [34, 3],
+    ]
   },
   {
     name: 'clock2',
@@ -1021,9 +1013,7 @@ const groups = [
       '25fd', '25aa', '25ab', '1f53a', '1f532', '1f533',
       '26ab', '26aa', '1f534', '1f535', '1f53b', '2b1c',
       '2b1b', '1f536', '1f537', '1f538', '1f539'
-    ],
-    sprite: 'emoji_spritesheet_4.png',
-    dimensions: [34, 7],
+    ]
   },
 ];
 

@@ -4,7 +4,7 @@ import baseConfig from './webpack.config.babel';
 let config = Object.create(baseConfig);
 
 config.entry = {
-  'jquery.emojiarea.min.js': './src/js/jquery.emojiarea.js',
+  'jquery.smartemoji.min.js': './src/js/jquery.smartemoji.js',
 };
 
 // noinspection JSUnresolvedFunction
@@ -14,6 +14,7 @@ config.plugins = [
     jQuery: 'jquery',
   }),
   new webpack.optimize.UglifyJsPlugin({
+    sourceMap: true,
     compress: {
       unused: true,
       dead_code: true,

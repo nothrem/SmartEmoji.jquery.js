@@ -16,35 +16,14 @@ export default class EmojiArea {
     this.$b = this.$ea.find(options.buttonSelector)
       .on('click', this.togglePicker.bind(this));
 
-    if (options.type !== 'unicode') {
-      this.$ti.hide();
-      this.$e = $('<div>')
-        .addClass('emoji-editor')
-        .attr('tabIndex', 0)
-        .attr('contentEditable', true)
-        .text(this.$ti.text())
-        .on(options.inputEvent, this.onInput.bind(this))
-        .on(options.keyEvent, this.onKey.bind(this))
-        .on('copy', options.textClipboard ? this.clipboardCopy.bind(this) : () => true)
-        .on('paste', options.textClipboard ? this.clipboardPaste.bind(this) : () => true)
-        .appendTo(this.$ea);
+    this.$e = this.$ti;
+    this.$ti.on(options.inputEvent, this.processTextContent.bind(this));
 
-      this.processContent();
+    this.processTextContent();
 
-      this.htmlSel = document.createRange();
-      this.htmlSel.setStartBefore(this.$e[0].lastChild);
-      this.htmlSel.collapse(true);
-
-    } else {
-      this.$e = this.$ti;
-      this.$ti.on(options.inputEvent, this.processTextContent.bind(this));
-
-      this.processTextContent();
-
-      const v = this.$ti.val();
-      this.$ti[0].setSelectionRange(v.length, v.length);
-      this.textSel = { start: v.length, end: v.length };
-    }
+    const v = this.$ti.val();
+    this.$ti[0].setSelectionRange(v.length, v.length);
+    this.textSel = { start: v.length, end: v.length };
 
     this.$e
       .focusout(this.saveSelection.bind(this))
@@ -294,11 +273,7 @@ export default class EmojiArea {
     alias = alias || Emoji.aliasFromUnicode(unicode);
     unicode = unicode || Emoji.unicodeFromAlias(alias);
     return unicode
-      ? options.type === 'unicode'
-        ? unicode
-        : options.type === 'css'
-          ? EmojiArea.generateEmojiTag(unicode, alias)
-          : EmojiArea.generateEmojiImg(unicode, alias, options)
+      ? unicode
       : alias;
   }
 
@@ -322,8 +297,8 @@ export default class EmojiArea {
 }
 
 EmojiArea.DEFAULTS = {
-  aliasRegex: /:([a-z0-9_]+?):/g,
-  asciiRegex: /([\/<:;=8>(][()D3opPy*>\/\\|-]+) /g,
+  aliasRegex: /:([a-z0-9_]+?):/g, //deprecated, colon aliased not supported in unicode mode
+  asciiRegex: /([\/<:;=8>(][()D3opPy*>\/\\|-]+) /g, //deprecated, ascii emoji not supported (in future they may be replaced by kaomoji
   unicodeRegex: /([\u{1f300}-\u{1f5ff}\u{1f900}-\u{1f9ff}\u{1f600}-\u{1f64f}\u{1f680}-\u{1f6ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}\u{1f1e6}-\u{1f1ff}\u{1f191}-\u{1f251}\u{1f004}\u{1f0cf}\u{1f170}-\u{1f171}\u{1f17e}-\u{1f17f}\u{1f18e}\u{3030}\u{2b50}\u{2b55}\u{2934}-\u{2935}\u{2b05}-\u{2b07}\u{2b1b}-\u{2b1c}\u{3297}\u{3299}\u{303d}\u{00a9}\u{00ae}\u{2122}\u{23f3}\u{24c2}\u{23e9}-\u{23ef}\u{25b6}\u{23f8}-\u{23fa}])/ug,
   inputSelector: 'input:text, textarea',
   buttonSelector: '>.emoji-button',
@@ -332,12 +307,12 @@ EmojiArea.DEFAULTS = {
   anchorAlignment: 'left', // can be left|right
   anchorOffsetX: -5,
   anchorOffsetY: 5,
-  type: 'unicode', // can be one of (unicode|css|image)
-  iconSize: 25, // only for css or image mode
-  assetPath: '../images', // only for css or image mode
+  type: 'unicode', // deprecated, unicode is the only supported mode
+  iconSize: 25, // deprecated, not supported in unicode mode
+  assetPath: '', // deprecated, not supported in unicode mode
   textClipboard: true,
   globalPicker: true,
 };
 
 EmojiArea.AUTOINIT = true;
-EmojiArea.INJECT_STYLES = true; // only makes sense when EmojiArea.type != 'unicode'
+EmojiArea.INJECT_STYLES = false; // only makes sense when EmojiArea.type != 'unicode'

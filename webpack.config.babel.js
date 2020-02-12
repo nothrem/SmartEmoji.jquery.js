@@ -4,7 +4,7 @@ import path from 'path';
 // noinspection JSUnresolvedFunction, JSUnusedGlobalSymbols
 export default {
   entry: {
-    'jquery.emojiarea.js': './src/js/jquery.emojiarea.js',
+    'jquery.smartemoji.js': './src/js/jquery.smartemoji.js',
   },
   externals: {
     jquery: 'jQuery',
@@ -36,7 +36,7 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]',
     libraryTarget: 'var',
-    library: 'EmojiArea'
+    library: 'SmartEmoji'
   },
   devtool: 'source-map',
   plugins: [
