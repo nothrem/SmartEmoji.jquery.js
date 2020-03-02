@@ -5,7 +5,10 @@
     "nothrem <smartemoji@nothrem.cz>"
   ],
   "description": "Client-side part for JS Emoji picker with emoji list and I18n.",
-  "main": "index.js",
+   "main": [
+    "dist/style.css",
+    "dist/jquery.smartemoji.js"
+  ],
   "keywords": [
 	  "emoji",
 	  "smiley",
