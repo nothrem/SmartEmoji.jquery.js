@@ -17,13 +17,14 @@ export default class EmojiPicker {
     $body.on('click', () => { this.hide(); });
     $(window).on('resize', () => { if (this.$p.is(':visible')) { this.reposition(); }});
 
+    var $emojidiv = $(document.getElementById(options.node));  //#31768  
     this.$p = $('<div>')
       .addClass('emoji-picker')
       .attr('data-picker-type', options.type) // $.data() here not possible, doesn't change dom
       .on('mouseup click', (e) => e.stopPropagation() && false)
       .hide()
-      .appendTo($body);
-
+      .appendTo($emojidiv);                                     //#31768
+    
     const tabs = this.loadPicker();
     setTimeout(this.loadEmojis.bind(this, tabs), 100);
   }
@@ -48,7 +49,7 @@ export default class EmojiPicker {
 
       const tab = $('<div>')
         .attr('id', id)
-        .addClass('emoji-group tab-pane')
+        .addClass('emoji-group tab-pane active')  //#31768 Add active class to all firstly
         .data('group', group.name);
 
       a.on('click', (e) => {
@@ -58,7 +59,7 @@ export default class EmojiPicker {
       });
       tabs.append(tab);
     }
-
+    
     tabs.find('.tab-pane').not(':first-child').hide().removeClass('active');
 
     this.$p.append(ul).append(tabs);
@@ -86,7 +87,7 @@ export default class EmojiPicker {
   insertEmoji(emoji) {
     if (typeof this.cb === 'function')
       this.cb(emoji, this.o);
-    this.hide();
+  //  this.hide();                      #31768
   }
 
   reposition(anchor, options) {
@@ -97,8 +98,10 @@ export default class EmojiPicker {
     const anchorOffset = $anchor.offset();
     anchorOffset.right = anchorOffset.left + anchor.outerWidth() - this.$p.outerWidth();
     this.$p.css({
-      top: anchorOffset.top + anchor.outerHeight() + (options.anchorOffsetY || 0),
-      left: anchorOffset[options.anchorAlignment] + (options.anchorOffsetX || 0),
+/*    top: anchorOffset.top + anchor.outerHeight() + (options.anchorOffsetY || 0),
+      left: anchorOffset[options.anchorAlignment] + (options.anchorOffsetX || 0),      #31768 */
+      top: options.top+"px",                                                        // #31768
+      left: options.left+"px"                                                       // #31768
     });
   };
 

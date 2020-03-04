@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5555db00a024cbec0657"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2f5705b260f47082e29b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -770,9 +770,15 @@ var EmojiArea = function () {
   function EmojiArea(emojiArea, options) {
     _classCallCheck(this, EmojiArea);
 
+    debugger;
     this.o = _jquery2.default.extend({}, EmojiArea.DEFAULTS, options);
     this.$ea = (0, _jquery2.default)(emojiArea);
-    this.$ti = this.$ea.find(options.inputSelector);
+    /* #31768 */
+    var $emojitarget = (0, _jquery2.default)(options.input);
+    this.$ti = $emojitarget;
+
+    alert(options.id);
+    /*  this.$ti = this.$ea.find(options.inputSelector);         #31768 */
     this.$b = this.$ea.find(options.buttonSelector).on('click', this.togglePicker.bind(this));
 
     this.$e = this.$ti;
@@ -1441,10 +1447,11 @@ var EmojiPicker = function () {
       }
     });
 
+    var $emojidiv = (0, _jquery2.default)(document.getElementById(options.node)); //#31768  
     this.$p = (0, _jquery2.default)('<div>').addClass('emoji-picker').attr('data-picker-type', options.type) // $.data() here not possible, doesn't change dom
     .on('mouseup click', function (e) {
       return e.stopPropagation() && false;
-    }).hide().appendTo($body);
+    }).hide().appendTo($emojidiv); //#31768
 
     var tabs = this.loadPicker();
     setTimeout(this.loadEmojis.bind(this, tabs), 100);
@@ -1467,7 +1474,8 @@ var EmojiPicker = function () {
 
         ul.append((0, _jquery2.default)('<li>').append(a));
 
-        var tab = (0, _jquery2.default)('<div>').attr('id', id).addClass('emoji-group tab-pane').data('group', group.name);
+        var tab = (0, _jquery2.default)('<div>').attr('id', id).addClass('emoji-group tab-pane active') //#31768 Add active class to all firstly
+        .data('group', group.name);
 
         a.on('click', function (e) {
           (0, _jquery2.default)('.tab-pane').not(tab).hide().removeClass('active');
@@ -1512,7 +1520,7 @@ var EmojiPicker = function () {
     key: 'insertEmoji',
     value: function insertEmoji(emoji) {
       if (typeof this.cb === 'function') this.cb(emoji, this.o);
-      this.hide();
+      //  this.hide();                      #31768
     }
   }, {
     key: 'reposition',
@@ -1523,8 +1531,10 @@ var EmojiPicker = function () {
       var anchorOffset = $anchor.offset();
       anchorOffset.right = anchorOffset.left + anchor.outerWidth() - this.$p.outerWidth();
       this.$p.css({
-        top: anchorOffset.top + anchor.outerHeight() + (options.anchorOffsetY || 0),
-        left: anchorOffset[options.anchorAlignment] + (options.anchorOffsetX || 0)
+        /*    top: anchorOffset.top + anchor.outerHeight() + (options.anchorOffsetY || 0),
+              left: anchorOffset[options.anchorAlignment] + (options.anchorOffsetX || 0),      #31768 */
+        top: options.top + "px", // #31768
+        left: options.left + "px" // #31768
       });
     }
   }, {

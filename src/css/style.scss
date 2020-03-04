@@ -2,6 +2,20 @@ $background-color: #fff;
 $border-color: #ccc;
 $box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
 
+* {
+     margin: 0;
+     padding: 0;
+  }
+
+a {
+  color: initial;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
 .emoji {
   color: transparent;
   display: inline-block;
@@ -22,7 +36,12 @@ $box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
 
   &-button {
     cursor: pointer;
-    margin: 5px;
+    vertical-align: middle;
+    font-size:26px;
+    text-align:center;
+      &:hover{
+        opacity: 0.7;
+      }
   }
 
   &-area {
@@ -46,13 +65,19 @@ $box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
     padding: 5px;
     resize: both;
     width: 100%;
-
-    * {
-      margin: 0;
-      padding: 0;
-    }
   }
-
+      
+  &-block {
+    display:block;
+    position:relative;   
+  } 
+    
+  &-wrapper,&-wrapper-mobile,&-wrapper-over {
+    position:relative;
+    width:100%;
+    height:34px;    
+  }  
+    
   &-picker {
     background-color: $background-color;
     border: 1px solid $border-color;
@@ -79,12 +104,38 @@ $box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
 
   &-group {
     display: grid;
-    grid-template-columns: repeat(6, 16.6666666%);
+    grid-template-columns: repeat(5, 20%);
     height: 200px;
     overflow-y: scroll;
     padding: 3px;
   }
 }
+
+/* Bootstrap overridings */
+  .nav>li>a {
+    padding: 0;
+  }
+
+/*.tab-content>.tab-pane {
+     display: unset !important;
+} */
+
+.tab-content {
+    .active {
+        a:hover{
+            background-color: #f0f0f0;
+            text-decoration: none;
+        }
+    }
+    
+}
+
+/*.tab-content>.active>a:hover {
+    background-color: #f0f0f0;
+    text-decoration: none;
+} */
+
+
 
 [data-type="unicode"], [data-picker-type="unicode"] {
   font-family: "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji", Times, Symbola, Aegyptus, Code2000, Code2001, Code2002, Musica, serif, LastResort;
