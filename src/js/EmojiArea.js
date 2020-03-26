@@ -10,15 +10,12 @@ import Emoji from 'EmojiUtil'
 export default class EmojiArea {
 
   constructor(emojiArea, options) {
-    debugger;  
     this.o = $.extend({}, EmojiArea.DEFAULTS, options);
     this.$ea = $(emojiArea);
-/* #31768 */      
-    var $emojitarget = $(options.input);
-    this.$ti = $emojitarget; 
-
-      alert(options.id);
-/*  this.$ti = this.$ea.find(options.inputSelector);         #31768 */
+      
+    var $emojitarget = $(options.input);                                    /* #31768 */ 
+    this.$ti = $emojitarget;                                                /* #31768 */
+      
     this.$b = this.$ea.find(options.buttonSelector)
       .on('click', this.togglePicker.bind(this));
 
@@ -309,6 +306,11 @@ EmojiArea.DEFAULTS = {
   assetPath: '', // deprecated, not supported in unicode mode
   textClipboard: true,
   globalPicker: true,
+  hideOnSelect: true,
+  heightSmall:    110,
+  heightBig:      243,
+  pickerWidth:    210,    
+  tabPaneSmall:   67,      
 };
 
 EmojiArea.AUTOINIT = true;
