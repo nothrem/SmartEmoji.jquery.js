@@ -20,7 +20,7 @@ h1, h2, h3, h4, p, form {
 }
 
 .emoji-button {
-  float: right;
+  float: left;
 }
 
 textarea, .emoji-editor {
@@ -29,6 +29,7 @@ textarea, .emoji-editor {
     height: 100px;
     border: 1px solid #d0d0d0;
     padding: 15px;
+    margin:0 114px;
     font-size: 13px;
     font-family: Helvetica, arial, sans-serif;
     font-weight: normal;

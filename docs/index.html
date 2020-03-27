@@ -14,12 +14,23 @@
     </head>
     <body>
         <h1>jquery.emojiarea.js Example</h1>
-        <div class="example">
-            <h2>Unicode with separate button</h2>
-            <div data-emojiarea data-type="unicode" data-global-picker="false" data-anchor-alignment="right">
-                <div class="emoji-button">&#x1f604;</div>
-                <textarea id="input1" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
-            </div>
+        <form class="example">
+            <h2>Unicode with separate button</h2> 
+            
+            <div class="emoji-block"> 
+                <div  id="emwd" class="emoji-wrapper"
+                  data-hide-on-select="false"
+                  data-input="#input1"    
+                  data-emojiarea
+                  data-type="unicode"
+                  data-global-picker="false"
+                  data-anchor-button="true"
+                  style="visibility: hidden;">
+                  <div class="emoji-button">&#x1f604;</div> 
+                </div>
+		   </div>          <script>document.getElementById("emwd").style.visibility="visible";</script>  
+            <textarea id="input1" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
+        </form>
             <h3>Value:</h3>
             <div class="value"><pre id="value1"></pre></div>
             <script> //Example how to read and use the message with emoji
@@ -27,13 +38,12 @@
                   $('#value1').text($('#input1').val());
                 }).triggerHandler('input');
             </script>
-        </div>
         <div class="example">
             <h2>Unicode with embedded button</h2>
             <div data-emoji-button="embed" data-emojiarea data-type="unicode" data-global-picker="false">
                 <div class="emoji-button">&#x1f604;</div>
                 <textarea id="input2" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
-            </div>
+            </div>    
             <h3>Value:</h3>
             <div class="value"><pre id="value2"></pre></div>
             <script> //Example how to read and use the message with emoji
