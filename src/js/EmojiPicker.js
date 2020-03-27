@@ -36,7 +36,7 @@ export default class EmojiPicker {
     const ul = $('<ul>')
       .addClass('emoji-selector nav nav-tabs');
     const tabs = $('<div>')
-      .addClass('tab-content');
+      .addClass('tabs-content');
 
     for (let g = 0; g < Emoji.groups.length; g++) {
       const group = Emoji.groups[g];
