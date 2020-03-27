@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ebf2991a6e52649d50b6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "dfe853259a5c3060d813"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1468,7 +1468,7 @@ var EmojiPicker = function () {
       var _this2 = this;
 
       var ul = (0, _jquery2.default)('<ul>').addClass('emoji-selector nav nav-tabs');
-      var tabs = (0, _jquery2.default)('<div>').addClass('tab-content');
+      var tabs = (0, _jquery2.default)('<div>').addClass('tabs-content');
 
       var _loop = function _loop(g) {
         var group = _EmojiUtil2.default.groups[g];
