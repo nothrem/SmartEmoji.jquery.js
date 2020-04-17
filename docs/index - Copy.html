@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>SmartEmoji Demo</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="../dist/reset.css">
+        <link rel="stylesheet" href="../dist/style.css">
+        <link rel="stylesheet" href="stylesheet.css">
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="../dist/jquery.smartemoji.js"></script>
+    </head>
+    <body>
+        <h1>jquery.emojiarea.js Example</h1>
+        <div class="example">
+            <h2>Unicode with separate button</h2>
+            <div data-emojiarea data-type="unicode" data-global-picker="false" data-anchor-alignment="right">
+                <div class="emoji-button">&#x1f604;</div>
+                <textarea id="input1" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
+            </div>
+            <h3>Value:</h3>
+            <div class="value"><pre id="value1"></pre></div>
+            <script> //Example how to read and use the message with emoji
+                $('#input1').on('input textinput', function() {
+                  $('#value1').text($('#input1').val());
+                }).triggerHandler('input');
+            </script>
+        </div>
+        <div class="example">
+            <h2>Unicode with embedded button</h2>
+            <div data-emoji-button="embed" data-emojiarea data-type="unicode" data-global-picker="false">
+                <div class="emoji-button">&#x1f604;</div>
+                <textarea id="input2" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
+            </div>
+            <h3>Value:</h3>
+            <div class="value"><pre id="value2"></pre></div>
+            <script> //Example how to read and use the message with emoji
+                $('#input2').on('input textinput', function() {
+                  $('#value2').text($('#input2').val());
+                }).triggerHandler('input');
+            </script>
+        </div>
+    </body>
+</html>

@@ -9,48 +9,117 @@
         <link rel="stylesheet" href="../dist/reset.css">
         <link rel="stylesheet" href="../dist/style.css">
         <link rel="stylesheet" href="stylesheet.css">
+        <link rel="stylesheet" href="font-awesome.min.css">
         <script src="assets/js/jquery.min.js"></script>
         <script src="../dist/jquery.smartemoji.js"></script>
+        <script> //Example how to read and use the message with emoji
+                $( document ).ready(function() {
+   //alert( document.location.pathname);
+});
+            </script>
     </head>
     <body>
         <h1>jquery.emojiarea.js Example</h1>
         <form class="example">
-            <h2>Unicode with separate button</h2> 
-            
-            <div class="emoji-block"> 
+            <h2>Unicode with separate button</h2>
+
+            <div class="emoji-block">
                 <div  id="emwd" class="emoji-wrapper"
                   data-hide-on-select="false"
-                  data-input="#input1"    
+                  data-input="#input1"
                   data-emojiarea
                   data-type="unicode"
                   data-global-picker="false"
                   data-anchor-button="true"
                   style="visibility: hidden;">
-                  <div class="emoji-button">&#x1f604;</div> 
+                  <div class="emoji-button">&#x1f604;</div>
                 </div>
-		   </div>          <script>document.getElementById("emwd").style.visibility="visible";</script>  
+		   </div>          <script>document.getElementById("emwd").style.visibility="visible";</script>
             <textarea id="input1" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
-        </form>
+      </form>
             <h3>Value:</h3>
-            <div class="value"><pre id="value1"></pre></div>
+        <div class="value"><pre id="value1"></pre></div>
+<!--
+        <div class="emoji-filters">
+          <div class="emoji-dropup">
+            <button class="emoji-dropbtn">gender
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="emoji-dropup-content">
+              <a>👨</a>
+              <a>👩</a>
+              <a>🧑</a>
+            </div>
+          </div>
+
+          <div class="emoji-dropup">
+            <button class="emoji-dropbtn">skin
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="emoji-dropup-content">
+              <a>🧑🏻</a>
+              <a>🧑🏼</a>
+              <a>🧑🏽</a>
+              <a>🧑🏾</a>
+              <a>🧑🏿</a>
+            </div>
+          </div>
+
+          <div class="emoji-dropup">
+            <button class="emoji-dropbtn">hair
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="emoji-dropup-content">
+              <a>🦰</a>
+              <a>🦱</a>
+              <a>🦲</a>
+              <a>🦳</a>
+              <a>👱</a>
+            </div>
+          </div>
+
+          <div class="emoji-dropup">
+            <button class="emoji-dropbtn">subsection
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="emoji-dropup-content">
+              <a href="#">Link 10</a>
+              <a href="#">Link 11</a>
+              <a href="#">Link 12</a>
+            </div>
+          </div>
+        </div>
+-->
             <script> //Example how to read and use the message with emoji
                 $('#input1').on('input textinput', function() {
                   $('#value1').text($('#input1').val());
                 }).triggerHandler('input');
             </script>
-        <div class="example">
-            <h2>Unicode with embedded button</h2>
-            <div data-emoji-button="embed" data-emojiarea data-type="unicode" data-global-picker="false">
-                <div class="emoji-button">&#x1f604;</div>
-                <textarea id="input2" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
-            </div>    
-            <h3>Value:</h3>
-            <div class="value"><pre id="value2"></pre></div>
-            <script> //Example how to read and use the message with emoji
-                $('#input2').on('input textinput', function() {
-                  $('#value2').text($('#input2').val());
-                }).triggerHandler('input');
-            </script>
-        </div>
+
+
+        <!--       <form class="example">
+               <h2>Unicode with embedded button</h2>
+
+               <div class="emoji-block">
+                 <div  id="emwd2" class="emoji-wrapper"
+                       data-hide-on-select="false"
+                       data-input="#input1"
+                       data-emojiarea
+                       data-type="unicode"
+                       data-global-picker="false"
+                       data-anchor-button="true"
+                       style="visibility: hidden;">
+                   <div class="emoji-button">&#x1f604;</div>
+                 </div>
+               </div>          <script>document.getElementById("emwd2").style.visibility="visible";</script>
+               <textarea id="input2" rows="5">You can insert unicode emojis here &#x1f604;</textarea>
+             </form>
+             <h3>Value:</h3>
+             <div class="value"><pre id="value2"></pre></div>
+             <script> //Example how to read and use the message with emoji
+             $('#input2').on('input textinput', function() {
+               $('#value2').text($('#input2').val());
+             }).triggerHandler('input');
+             </script>  -->
     </body>
 </html>
