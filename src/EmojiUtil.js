@@ -4,7 +4,7 @@
  * @author Wolfgang Stöttinger
  */
 
-//import Data from 'EmojiData';
+import Data from 'EmojiData';
 
 export default class EmojiUtil {
   constructor() {
@@ -13,41 +13,21 @@ export default class EmojiUtil {
   /**
    *
    */
-  static  initialize() {
+  static initialize() {
     EmojiUtil.aliases = {};
     EmojiUtil.unicodes = {};
-    EmojiUtil.groups = {};
-    EmojiUtil.filters = {};
-    EmojiUtil.keywords = {};
 
+    const dataKeys = Object.keys(EmojiUtil.data);
+    for (let e = 0; e < dataKeys.length; e++) {
+      const key = dataKeys[e];
+      const emojiData = EmojiUtil.data[key];
+      if (emojiData) {
+        let code = emojiData[EmojiUtil.EMOJI_UNICODE][0];
 
-    var path = document.location;
-    var curLang = document.documentElement.lang;
-    if(curLang.length==2){
-      curLang='en-US';
+        EmojiUtil.aliases[emojiData[EmojiUtil.EMOJI_ALIASES]] = key;
+        EmojiUtil.unicodes[code] = key;
+      }
     }
-    var   fullPath = path.origin + '/sk.ru/www/emoji/groups.en-US.json';  //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
-    EmojiUtil.syncJSON("./groups.ru-RU.json", function (msg) {
-      EmojiUtil.groups = msg.groups;
-      EmojiUtil.filters = msg.filters;
-    });
-
- //   for (let key in EmojiUtil.groups) {
-      //   alert( key );  // name, age, isAdmin
-      //   alert(EmojiUtil.groups['smileys_emotion']['l']['face_affection'].i);
-//    }
-  }
-
-  static syncJSON(url, callback) {
-    $.ajax({
-      type: "POST",
-      async: false,
-      url: url,
-      contentType: "application/json",
-      dataType: "json",
-      success: function (msg) { callback(msg) },
-      error: function (msg) { alert('error : reading JSON file!!!!'); }
-    });
   }
 
   static checkAlias(alias) {
@@ -120,23 +100,14 @@ export default class EmojiUtil {
   static aliasFromAscii(ascii) {
     return EmojiUtil.ascii[ascii] || null;
   }
-
 }
-/*
+
 EmojiUtil.data = Data.data;
 EmojiUtil.groups = Data.groups;
 EmojiUtil.ascii = Data.ascii;
 
 EmojiUtil.EMOJI_UNICODE = 0;
 EmojiUtil.EMOJI_ALIASES = 1;
-*/
 
-EmojiUtil.EMOJI_ICON      = 'i';
-EmojiUtil.EMOJI_NAME      = 'n';
-EmojiUtil.EMOJI_MODIFIER  = 'm';
-EmojiUtil.EMOJI_KEYWORD   = 'k';
-EmojiUtil.EMOJI_LIST      = 'l';
-
-//-----------------------------------------------------------------------------------------
 
 EmojiUtil.initialize();

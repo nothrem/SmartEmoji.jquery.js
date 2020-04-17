@@ -18,18 +18,18 @@ export default class EmojiPicker {
     $(window).on('resize', () => { if (this.$p.is(':visible')) { this.hide(); }});
 
     var $emojidiv =  $(options.input).parents('form').find('.emoji-wrapper').attr('id');        /* #31768 */
-    var ifPickerExist = $(options.input).parents('form').find('.emoji-picker').attr('class');
+    var ifPickerExist = $(options.input).parents('form').find('.emoji-picker').attr('class'); 
     if (!ifPickerExist) {
         this.$p = $('<div>')
         .addClass('emoji-picker')
         .attr('data-picker-type', options.type) // $.data() here not possible, doesn't change dom
         .on('mouseup click', (e) => e.stopPropagation() && false)
         .hide()
-        .appendTo('#'+$emojidiv);
+        .appendTo('#'+$emojidiv);                                          
     }
-
+   
     const tabs = this.loadPicker(options);
-    setTimeout(this.loadEmojis.bind(this, tabs), 300);
+    setTimeout(this.loadEmojis.bind(this, tabs), 100);
   }
 
   loadPicker(options) {
@@ -38,107 +38,59 @@ export default class EmojiPicker {
     const tabs = $('<div>')
       .addClass('tab-content');
 
-    for (let g in Emoji.groups) {   // g - key of the Emoji.groups
+    for (let g = 0; g < Emoji.groups.length; g++) {
       const group = Emoji.groups[g];
-      const id = 'group_' + g;
+      const id = 'group_' + group.name;
       const gid = '#' + id;
+
       const a = $('<a>')
-        .html(Emoji.groups[g].i)
+        .html(EmojiArea.createEmoji(group.name, this.o))
         .data('toggle', 'tab')
-        .attr('title',group.n)
         .attr('href', gid);
+
       ul.append($('<li>').append(a));
+
       const tab = $('<div>')
         .attr('id', id)
         .addClass('emoji-group tab-pane active')  //#31768 Add active class to all firstly
-        .data('group', g);
-
+        .data('group', group.name);
+        
       a.on('click', (e) => {
         $('.tab-pane').not(tab).hide().removeClass('active');
-        //       if (options.pickerShrink){
-//           tab.css({
-//              height: options.tabPaneSmall + "px",
-//            });
-//        }
-        tab.addClass('active').show();
+ //       if (options.pickerShrink){
+//           tab.css({  
+//              height: options.tabPaneSmall + "px",      
+//            });      
+//        }  
+        tab.addClass('active').show(); 
         e.preventDefault();
       });
       tabs.append(tab);
     }
-//  emoji filters------------------------------------------------
-    const filters = $('<div>')
-      .addClass('emoji-filters');
-
-    for (let f in Emoji.filters) {   // f - key of the Emoji.filters
-      const dropup = $('<div>')
-        .addClass('emoji-dropup');
-      const dropbtn = $('<div>')
-        .addClass('emoji-dropbtn')
-        .html(Emoji.filters[f].n+'🔼')
-        .attr('id', f);
-//      const arrow = $('<i>')
-//        .addClass('fa fa-caret-down');
-//      dropbtn.append(arrow);
-      dropup.append(dropbtn);
-      const dropcont = $('<div>')
-        .addClass('emoji-dropup-content');
-
-      for (let em in Emoji.filters[f]['l']) {
-        const a = $('<a>')
-          .html(Emoji.filters[f]['l'][em].i)
-          .attr('title', Emoji.filters[f]['l'][em].n)
-          .attr('mode', Emoji.filters[f]['l'][em].m);
-        dropcont.append(a);
-      }
-      dropup.append(dropcont);
-      filters.append(dropup);
-    }
-
-//-----------------------------------------------------------------
+    
     tabs.find('.tab-pane').not(':first-child').hide().removeClass('active');
-    this.$p.append(ul).append(tabs).append(filters);
+
+    this.$p.append(ul).append(tabs);
     return tabs.children();
   }
 
-  // this is to show the emojis directly
   loadEmojis(tabs) {
-    let i=0;
-    for (let g in Emoji.groups) {   // g - key of the Emoji.groups
-      let group = Emoji.groups[g];
-      let tab = tabs[i];
-      for (let sg in Emoji.groups[g][Emoji.EMOJI_LIST]) {
-        for (let emo in Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST]) {
-          let emojiobj = Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
-          let emojiElem = $('<a>')
-            .data('emoji', emo)
-//            .html(EmojiArea.createEmoji(emo, this.o))
-            .html(emo)
-            .attr('title',emojiobj.n)
-            .on('click', () => {this.insertEmoji(emo, this.o)});
+    for (let g = 0; g < Emoji.groups.length; g++) {
+      const group = Emoji.groups[g];
+      const tab = tabs[g];
+      for (let e = 0; e < group.items.length; e++) {
+        const emojiId = group.items[e];
+        if (Emoji.data.hasOwnProperty(emojiId)) {
+          const word = Emoji.data[emojiId][Emoji.EMOJI_ALIASES] || '';
+          const emojiElem = $('<a>')
+            .data('emoji', word)
+            .html(EmojiArea.createEmoji(word, this.o))
+            .on('click', () => {this.insertEmoji(word, this.o)});
           $(tab).append(emojiElem);
         }
       }
-      i++;
     }
   }
-
-  // this is to show the subgroups
-//  loadEmojis(tabs) {
-//    let i=0;
-//    for (let g in Emoji.groups) {   // g - key of the Emoji.groups
-//      let group = Emoji.groups[g];
-//      let tab = tabs[i];
-//      for (let sg in Emoji.groups[g][Emoji.EMOJI_LIST]) {
-//        let subgroup = group[Emoji.EMOJI_LIST][sg];
-//        let emojiElem = $('<a>')
-//          .data('emoji', sg)
-//          .html(Emoji.groups[g][Emoji.EMOJI_LIST][sg].i)
-//          .on('click', () => {this.insertEmoji(sg, this.o)});  // ?????
-//        $(tab).append(emojiElem);
-//      }
-//      i++;
-//    }
-//  }
 
   insertEmoji(emoji, options) {
     if (typeof this.cb === 'function')
@@ -146,84 +98,74 @@ export default class EmojiPicker {
     if (options.hideOnSelect){
         this.hide();
     }
-
+  
   }
 
   reposition(anchor, options) {
     if (!anchor || anchor.length === 0)
       return;
-
-
+      
+    
     const $anchor = $(anchor);
     const pickerH = options.heightBig;
-    const pickerh = options.heightSmall;
-    const pickerW = options.pickerWidth;
-    var $emojwrap =  $anchor.parent();
-    var emojwrapOFF = $emojwrap.offset();
-
+    const pickerh = options.heightSmall;  
+    const pickerW = options.pickerWidth; 
+    var $emojwrap =  $anchor.parent(); 
+    var emojwrapOFF = $emojwrap.offset();  
+      
     const winW = $(window).width();
-    const winH = $(window).height();
-
+    const winH = $(window).height(); 
+      
     const $target = $(options.input);
     var targetOFF = $target.offset();
     var targetW = $target.width();
     var targetH = $target.outerHeight(false);
     var targetLeft = targetOFF.left;
-    var targetTop  = targetOFF.top;
+    var targetTop  = targetOFF.top; 
     var pickerLeft = - pickerW;
-
+      
     if (options.anchorButton) {
         targetTop = $anchor.offset().top;
         targetH = $anchor.outerHeight(false);
         pickerLeft = ($emojwrap.width()-pickerW)/2;
-    }
-
+    } 
+      
     var pickerTop =  targetTop + targetH - emojwrapOFF.top;
 
     if (emojwrapOFF.left<pickerW){
- //       pickerLeft = - emojwrapOFF.left;  For demo page ONLY! URGENT!!
-    }
-
+        pickerLeft = - emojwrapOFF.left;
+    }  
+      
     var toBottom =  winH - targetH - targetTop;
     if (toBottom<pickerH) {
        if (toBottom<pickerh) {
-          pickerTop = - pickerh-(emojwrapOFF.top-targetTop);
-       }
-       options.pickerShrink = true;
-    } else {
-      options.pickerShrink = false;
-    }
-
+          pickerTop = - pickerh-(emojwrapOFF.top-targetTop);  
+       } 
+       options.pickerShrink = true;  
+    } 
+      
     this.$p.css({
         top:  pickerTop.toFixed(0)+"px",
         left: pickerLeft.toFixed(0)+"px",
     });
     if (options.pickerShrink) {
         this.$p.css({
-           height: options.heightSmall + "px",
-        });
-    } else {
-        this.$p.css({
-          height: options.heightBig + "px",
-        });
-    }
+           height: options.heightSmall + "px",      
+        });     
+    } 
   };
 
   show(insertCallback, anchor, options) {
     this.cb = insertCallback;
     this.reposition(anchor, options);
     this.$p.attr('data-picker-type', options.type); // $.data() here not possible, doesn't change dom
-
+    
     if (options.pickerShrink){
-        $('.tab-pane').css({
-              height: options.heightSmall-25 + "px",
-            });
-    } else {
-        $('.tab-pane').css({
-          height: options.heightBig-30+"px",
-        });
-    }
-
+        $('.tab-pane').css({  
+              height: options.tabPaneSmall + "px",      
+            });      
+    }   
+      
     this.$p.show();
     return this;
   }

@@ -12,10 +12,10 @@ export default class EmojiArea {
   constructor(emojiArea, options) {
     this.o = $.extend({}, EmojiArea.DEFAULTS, options);
     this.$ea = $(emojiArea);
-      
-    var $emojitarget = $(options.input);                                    /* #31768 */ 
+
+    var $emojitarget = $(options.input);                                    /* #31768 */
     this.$ti = $emojitarget;                                                /* #31768 */
-      
+
     this.$b = this.$ea.find(options.buttonSelector)
       .on('click', this.togglePicker.bind(this));
 
@@ -25,6 +25,7 @@ export default class EmojiArea {
     this.processTextContent();
 
     const v = this.$ti.val();
+ // console.log(this.$ti,options.input);
     this.$ti[0].setSelectionRange(v.length, v.length);
     this.textSel = { start: v.length, end: v.length };
 
@@ -151,17 +152,17 @@ export default class EmojiArea {
   processTextContent(event) {
     if (!event || (event.originalEvent && event.originalEvent.inputType !== 'historyUndo')) {
       let val = this.$ti.val();
-      let parsed = this.replaceAscii(val);
-      parsed = this.replaceAliases(parsed);
-      if (parsed !== val) {
-        const sel = parsed.length - (val.length - this.$ti[0].selectionEnd);
-        this.$ti.val(parsed);
-        this.$ti[0].setSelectionRange(sel, sel);
-        this.textSel = { start: sel, end: sel };
-        this.$ti
-          .focus()
-          .trigger(this.o.inputEvent);
-      }
+  //    let parsed = this.replaceAscii(val);
+  //    parsed = this.replaceAliases(parsed);
+  //    if (parsed !== val) {
+  //      const sel = parsed.length - (val.length - this.$ti[0].selectionEnd);
+  //      this.$ti.val(parsed);
+  //      this.$ti[0].setSelectionRange(sel, sel);
+  //      this.textSel = { start: sel, end: sel };
+  //      this.$ti
+  //        .focus()
+  //        .trigger(this.o.inputEvent);
+  //    }
     }
   }
 
@@ -188,72 +189,74 @@ export default class EmojiArea {
       }
       else if (e.nodeType === 3) { // text node
         // replace unicodes
-        let parsed = e.nodeValue;
+ //       let parsed = e.nodeValue;
 
-        if (this.o.type !== 'unicode') { //convert existing unicodes
-          parsed = this.replaceUnicodes(parsed);
-        }
+ //       if (this.o.type !== 'unicode') { //convert existing unicodes
+ //         parsed = this.replaceUnicodes(parsed);
+ //       }
 
-        parsed = this.replaceAscii(parsed);
-        parsed = this.replaceAliases(parsed);
+ //       parsed = this.replaceAscii(parsed);
+ //       parsed = this.replaceAliases(parsed);
 
-        if (parsed !== e.nodeValue) {
-          const isSelected = (this.htmlSel && this.htmlSel.endContainer === e);
-          const range = isSelected ? this.htmlSel : document.createRange();
-          const caret = this.htmlSel ? e.nodeValue.length - this.htmlSel.endOffset : 0;
-          const next = e.nextSibling;
-          range.selectNode(e);
-          this.replaceSelection(parsed, range, null);
-          if (isSelected) {
-            if (next.previousSibling) {
-              const inserted = next.previousSibling;
-              range.setStart(inserted, inserted.length - caret);
-              range.setEnd(inserted, inserted.length - caret);
+ //       if (parsed !== e.nodeValue) {
+ //         const isSelected = (this.htmlSel && this.htmlSel.endContainer === e);
+ //         const range = isSelected ? this.htmlSel : document.createRange();
+ //         const caret = this.htmlSel ? e.nodeValue.length - this.htmlSel.endOffset : 0;
+ //         const next = e.nextSibling;
+ //         range.selectNode(e);
+ //         this.replaceSelection(parsed, range, null);
+ //         if (isSelected) {
+ //           if (next.previousSibling) {
+ //             const inserted = next.previousSibling;
+ //             range.setStart(inserted, inserted.length - caret);
+ //             range.setEnd(inserted, inserted.length - caret);
               //this.htmlSel.setStartAfter(content[content.length - 1]);
               //this.htmlSel.collapse(false);
-            }
-            else {
-              range.setStartBefore(this.$e[0].lastChild);
-              range.setEndBefore(this.$e[0].lastChild);
-            }
-          }
-        }
+ //           }
+ //           else {
+ //             range.setStartBefore(this.$e[0].lastChild);
+ //             range.setEndBefore(this.$e[0].lastChild);
+ //           }
+ //         }
+ //       }
       }
     });
   }
 
-  replaceUnicodes(text) {
-    return text.replace(this.o.unicodeRegex, (match, unicode) => {
-      return Emoji.checkUnicode(unicode)
-        ? EmojiArea.createEmoji(null, this.o, unicode)
-        : unicode;
-    });
-  }
+  //replaceUnicodes(text) {
+  //  return text.replace(this.o.unicodeRegex, (match, unicode) => {
+  //    return Emoji.checkUnicode(unicode)
+  //      ? EmojiArea.createEmoji(null, this.o, unicode)
+  //      : unicode;
+  //  });
+  //}
 
-  replaceAscii(text) {
-    return text.replace(this.o.asciiRegex, (match, ascii) => {
-      if (Emoji.checkAscii(ascii)) {
-        const alias = Emoji.aliasFromAscii(ascii);
-        if (alias) {
-          return EmojiArea.createEmoji(alias, this.o);
-        }
-      }
-      return ascii + ' ';
-    });
-  }
+  //replaceAscii(text) {
+  //  return text.replace(this.o.asciiRegex, (match, ascii) => {
+  //    if (Emoji.checkAscii(ascii)) {
+  //      const alias = Emoji.aliasFromAscii(ascii);
+  //      if (alias) {
+  //        return EmojiArea.createEmoji(alias, this.o);
+  //      }
+  //    }
+  //    return ascii + ' ';
+  //  });
+  //}
 
-  replaceAliases(text) {
-    return text.replace(this.o.aliasRegex, (match, alias) => {
-      return Emoji.checkAlias(alias)
-        ? EmojiArea.createEmoji(alias, this.o)
-        : ':' + alias + ':';
-    });
-  }
+  //replaceAliases(text) {
+  //  return text.replace(this.o.aliasRegex, (match, alias) => {
+  //    return Emoji.checkAlias(alias)
+  //      ? EmojiArea.createEmoji(alias, this.o)
+  //      : ':' + alias + ':';
+  //  });
+  //}
 
   togglePicker() {
     const delegate = (this.picker || EmojiPicker);
     if (!delegate.isVisible()) {
-      this.picker = delegate.show(this.insert.bind(this), this.$b, this.o);
+      const cbtest = 1;
+//      this.picker = delegate.show(cbtest, this.$b, this.o);  //ERROR
+      this.picker = delegate.show(this.insert.bind(this), this.$b, this.o);  //ERROR
     } else {
       delegate.hide();
     }
@@ -261,9 +264,9 @@ export default class EmojiArea {
   }
 
   insert(alias) {
-    const content = EmojiArea.createEmoji(alias, this.o);
-    if (!this.replaceSelection(content)) {
-      this.$e.append(content)
+//    const content = EmojiArea.createEmoji(alias, this.o);
+    if (!this.replaceSelection(alias)) {
+      this.$e.append(alias)
         .focus()
         .trigger(this.o.inputEvent);
     }
@@ -273,11 +276,12 @@ export default class EmojiArea {
     if (!alias && !unicode) {
       return;
     }
-    alias = alias || Emoji.aliasFromUnicode(unicode);
-    unicode = unicode || Emoji.unicodeFromAlias(alias);
-    return unicode
-      ? unicode
-      : alias;
+    return alias;
+ //   alias = alias || Emoji.aliasFromUnicode(unicode);
+ //   unicode = unicode || Emoji.unicodeFromAlias(alias);
+ //   return unicode
+ //     ? unicode
+ //     : alias;
   }
 
   static generateEmojiTag(unicode, alias) {
@@ -307,10 +311,11 @@ EmojiArea.DEFAULTS = {
   textClipboard: true,
   globalPicker: true,
   hideOnSelect: true,
+  pickerShrink: false,
   heightSmall:    110,
-  heightBig:      243,
-  pickerWidth:    210,    
-  tabPaneSmall:   67,      
+  heightBig:      248,
+  pickerWidth:    280,
+  tabPaneSmall:   67,
 };
 
 EmojiArea.AUTOINIT = true;
