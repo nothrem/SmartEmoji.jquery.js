@@ -134,11 +134,11 @@ textarea, .emoji-editor {
 }
 
 .emoji-dropup .emoji-dropbtn {
-  font-size: 12px;
+  font-size: 19px;
   border: none;
   outline: none;
   color: grey;
-  padding: 8px 5px;
+  padding: 3px 2px;
   background-color: inherit;
   font-family: inherit;
   margin: 0;
