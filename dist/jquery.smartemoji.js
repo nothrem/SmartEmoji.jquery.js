@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ce47da1a260fee283a09"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2f6485c94bd4a621f401"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1160,7 +1160,8 @@ var EmojiUtil = function () {
       EmojiUtil.groups = {};
       EmojiUtil.filters = {};
       EmojiUtil.keywords = {};
-
+      EmojiUtil.mode = {};
+      EmojiUtil.arrfil = [];
       var path = document.location;
       var curLang = document.documentElement.lang;
       if (curLang.length == 2) {
@@ -1170,6 +1171,7 @@ var EmojiUtil = function () {
       EmojiUtil.syncJSON("./groups.ru-RU.json", function (msg) {
         EmojiUtil.groups = msg.groups;
         EmojiUtil.filters = msg.filters;
+        EmojiUtil.mode = msg.mode;
       });
 
       //   for (let key in EmojiUtil.groups) {
@@ -1518,6 +1520,12 @@ var EmojiPicker = function () {
           //              height: options.tabPaneSmall + "px",
           //            });
           //        }
+          var drop = (0, _jquery2.default)('.emoji-dropup');
+          if ('group_people_body' === id) {
+            drop.show();
+          } else {
+            drop.hide();
+          }
           tab.addClass('active').show();
           e.preventDefault();
         });
@@ -1530,28 +1538,122 @@ var EmojiPicker = function () {
       //  emoji filters------------------------------------------------
       var filters = (0, _jquery2.default)('<div>').addClass('emoji-filters');
 
-      for (var f in _EmojiUtil2.default.filters) {
+      var _loop2 = function _loop2(f) {
         // f - key of the Emoji.filters
         var dropup = (0, _jquery2.default)('<div>').addClass('emoji-dropup');
-        var dropbtn = (0, _jquery2.default)('<div>').addClass('emoji-dropbtn').html(_EmojiUtil2.default.filters[f].n + '🔼').attr('id', f);
-        //      const arrow = $('<i>')
-        //        .addClass('fa fa-caret-down');
-        //      dropbtn.append(arrow);
+        var dropbtn = (0, _jquery2.default)('<div>').addClass('emoji-dropbtn').html(_EmojiUtil2.default.filters[f].i).attr('mode', '99999').attr('id', f);
         dropup.append(dropbtn);
         var dropcont = (0, _jquery2.default)('<div>').addClass('emoji-dropup-content');
+        _EmojiUtil2.default.arrfil[f] = '';
+
+        var _loop3 = function _loop3(em) {
+          var a = (0, _jquery2.default)('<a>').html(_EmojiUtil2.default.filters[f]['l'][em].i).attr('title', _EmojiUtil2.default.filters[f]['l'][em].n).attr('mode', _EmojiUtil2.default.filters[f]['l'][em].m);
+          a.on('click', function (e) {
+            if (a.attr('mode').indexOf('00000') + 1) {
+              dropbtn.html(dropbtn.attr('mode'));
+              dropbtn.attr('title', '');
+              dropbtn.attr('mode', '99999');
+            } else {
+              if (dropbtn.attr('mode') == '99999') {
+                dropbtn.attr('mode', dropbtn.html());
+              }
+              dropbtn.html(a.html());
+              dropbtn.attr('title', a.attr('title'));
+              //            dropbtn.attr('mode', a.attr('mode'));
+              dropcont.hide();
+              dropcont.css("display", "");
+              //--------------------------------------
+              //          const tabAct = $('.emoji-group tab-pane active');
+              //          for( let el in tabAct.children() ){
+              //            const $emode = $(el);
+              //            $emode.html()
+              //          }
+
+              //           let group = Emoji.groups['people_body'];
+              //            let tab = tabs[i];
+              //            for (let sg in group[Emoji.EMOJI_LIST]) {
+              //              for (let emo in group[Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST]) {
+              //                let emojiobj = group[Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
+
+              //                let emojiElem = $('<a>')
+              //                  .data('emoji', emo)
+              //            .html(EmojiArea.createEmoji(emo, this.o))
+              //                  .html(emo)
+              //                  .attr('title',emojiobj.n)
+              //                  .on('click', () => {this.insertEmoji(emo, this.o)});
+              //                $(tab).append(emojiElem);
+              //              }
+              //            }
+              //-------------------------------------
+            }
+            if (a.attr('mode') === '00000') {
+              _EmojiUtil2.default.arrfil[f] = '';
+            } else {
+              _EmojiUtil2.default.arrfil[f] = a.attr('mode');
+            }
+            var template = '';
+            if (_EmojiUtil2.default.arrfil['skin'] !== '') template = template + _EmojiUtil2.default.arrfil['skin'] + '_';
+            if (_EmojiUtil2.default.arrfil['hair'] !== '') template = template + _EmojiUtil2.default.arrfil['hair'] + '_';
+            if (_EmojiUtil2.default.arrfil['gender'] !== '') template = template + _EmojiUtil2.default.arrfil['gender'] + '_';
+            template = template.length > 0 ? template.slice(0, template.length - 1) : template;
+
+            (0, _jquery2.default)('#group_people_body a').each(function (i, el) {
+              var $el = (0, _jquery2.default)(el);
+              //            alert(i + ': ' + $el.text());
+              if (template !== '') {
+                $el.text(_EmojiUtil2.default.mode[template]['l'][$el.text()]);
+                //         } else {
+                //         $el.text(Emoji.mode[template][$el.text()]);
+              }
+            });
+
+            //         element.contents().each((i, e) => {
+            //           if (e.nodeType === 1 || e.nodeType === 11) { // element or document fragment
+            //             const $e = $(e);
+            //             if (!$e.is('.emoji')) // skip emoji
+            //             {
+            //               this._processElement($e);
+            //             }
+            //           }
+
+            //          var taba =  tabAct.children();
+            //          for( let el in tabAct.children() ){
+
+            //           const $emode = $(el);
+            //          alert(el.val());
+            //          $emode.html()
+            //        }
+            //         alert(template);
+            e.preventDefault();
+          });
+          dropcont.append(a);
+        };
 
         for (var em in _EmojiUtil2.default.filters[f]['l']) {
-          var a = (0, _jquery2.default)('<a>').html(_EmojiUtil2.default.filters[f]['l'][em].i).attr('title', _EmojiUtil2.default.filters[f]['l'][em].n).attr('mode', _EmojiUtil2.default.filters[f]['l'][em].m);
-          dropcont.append(a);
+          _loop3(em);
         }
         dropup.append(dropcont);
         filters.append(dropup);
+      };
+
+      for (var f in _EmojiUtil2.default.filters) {
+        _loop2(f);
       }
 
       //-----------------------------------------------------------------
       tabs.find('.tab-pane').not(':first-child').hide().removeClass('active');
       this.$p.append(ul).append(tabs).append(filters);
+      var drop = (0, _jquery2.default)('.emoji-dropup');
+      drop.hide();
       return tabs.children();
+    }
+  }, {
+    key: 'selectItem',
+    value: function selectItem(mode) {
+      if (typeof this.cb === 'function') {
+        alert(mode);
+        this.cb(mode);
+      }
     }
 
     // this is to show the emojis directly
@@ -1567,7 +1669,7 @@ var EmojiPicker = function () {
         var group = _EmojiUtil2.default.groups[g];
         var _tab = tabs[i];
         for (var sg in _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST]) {
-          var _loop2 = function _loop2(emo) {
+          var _loop4 = function _loop4(emo) {
             var emojiobj = _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST][sg][_EmojiUtil2.default.EMOJI_LIST][emo];
             var emojiElem = (0, _jquery2.default)('<a>').data('emoji', emo)
             //            .html(EmojiArea.createEmoji(emo, this.o))
@@ -1578,7 +1680,7 @@ var EmojiPicker = function () {
           };
 
           for (var emo in _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST][sg][_EmojiUtil2.default.EMOJI_LIST]) {
-            _loop2(emo);
+            _loop4(emo);
           }
         }
         i++;
