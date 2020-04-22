@@ -19,8 +19,8 @@ export default class EmojiUtil {
     EmojiUtil.groups = {};
     EmojiUtil.filters = {};
     EmojiUtil.keywords = {};
-
-
+    EmojiUtil.mode = {};
+    EmojiUtil.arrfil = [];
     var path = document.location;
     var curLang = document.documentElement.lang;
     if(curLang.length==2){
@@ -30,6 +30,7 @@ export default class EmojiUtil {
     EmojiUtil.syncJSON("./groups.ru-RU.json", function (msg) {
       EmojiUtil.groups = msg.groups;
       EmojiUtil.filters = msg.filters;
+      EmojiUtil.mode = msg.mode;
     });
 
  //   for (let key in EmojiUtil.groups) {
