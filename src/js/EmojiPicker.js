@@ -74,108 +74,187 @@ export default class EmojiPicker {
 //  emoji filters------------------------------------------------
     const filters = $('<div>')
       .addClass('emoji-filters');
-
+    var howmany = 1;
     for (let f in Emoji.filters) {   // f - key of the Emoji.filters
-      const dropup = $('<div>')
-        .addClass('emoji-dropup');
-      const dropbtn = $('<div>')
-        .addClass('emoji-dropbtn')
-        .html(Emoji.filters[f].i)
-        .attr('mode','99999')
-        .attr('id', f);
-      dropup.append(dropbtn);
-      const dropcont = $('<div>')
-        .addClass('emoji-dropup-content');
-      Emoji.arrfil[f]='';
-      for (let em in Emoji.filters[f]['l']) {
-        const a = $('<a>')
-          .html(Emoji.filters[f]['l'][em].i)
-          .attr('title', Emoji.filters[f]['l'][em].n)
-          .attr('mode', Emoji.filters[f]['l'][em].m);
-        a.on('click', (e) => {
-          if(a.attr('mode').indexOf('00000')+1){
-            dropbtn.html(dropbtn.attr('mode'));
-            dropbtn.attr('title', '');
-            dropbtn.attr('mode', '99999');
-          }else{
-            if(dropbtn.attr('mode')=='99999') {
-              dropbtn.attr('mode', dropbtn.html());
-            }
-            dropbtn.html(a.html());
-            dropbtn.attr('title', a.attr('title'));
-//            dropbtn.attr('mode', a.attr('mode'));
-            dropcont.hide();
-            dropcont.css("display","");
-//--------------------------------------
-            //          const tabAct = $('.emoji-group tab-pane active');
-            //          for( let el in tabAct.children() ){
-            //            const $emode = $(el);
-            //            $emode.html()
-            //          }
-
- //           let group = Emoji.groups['people_body'];
-//            let tab = tabs[i];
-//            for (let sg in group[Emoji.EMOJI_LIST]) {
-//              for (let emo in group[Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST]) {
-//                let emojiobj = group[Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
-
-//                let emojiElem = $('<a>')
-//                  .data('emoji', emo)
-                  //            .html(EmojiArea.createEmoji(emo, this.o))
-//                  .html(emo)
-//                  .attr('title',emojiobj.n)
-//                  .on('click', () => {this.insertEmoji(emo, this.o)});
-//                $(tab).append(emojiElem);
-//              }
-//            }
-//-------------------------------------
-          }
-          if (a.attr('mode')=== '00000') {
-            Emoji.arrfil[f]='';
-          } else {
-            Emoji.arrfil[f]=a.attr('mode');
-          }
-          var template = '';
-          if (Emoji.arrfil['skin']!=='') template = template + Emoji.arrfil['skin']+'_';
-          if (Emoji.arrfil['hair']!=='') template = template + Emoji.arrfil['hair']+'_';
-          if (Emoji.arrfil['gender']!=='') template = template + Emoji.arrfil['gender']+'_';
-          template = template.length>0 ? template.slice(0,template.length-1): template;
-
-          $('#group_people_body a').each((i,el) => {
-            const $el = $(el);
-//            alert(i + ': ' + $el.text());
-            if(template!==''){
-              $el.text(Emoji.mode[template]['l'][$el.text()]);
-   //         } else {
-   //         $el.text(Emoji.mode[template][$el.text()]);
-            }
-          });
-
- //         element.contents().each((i, e) => {
- //           if (e.nodeType === 1 || e.nodeType === 11) { // element or document fragment
- //             const $e = $(e);
- //             if (!$e.is('.emoji')) // skip emoji
- //             {
- //               this._processElement($e);
- //             }
- //           }
-
-//          var taba =  tabAct.children();
-//          for( let el in tabAct.children() ){
-
- //           const $emode = $(el);
-  //          alert(el.val());
-  //          $emode.html()
-  //        }
- //         alert(template);
-          e.preventDefault();
-        });
-        dropcont.append(a);
+      if ('skin' === f || 'gender' === f) {
+        howmany = 2;
+      } else {
+        howmany = 1;
       }
-      dropup.append(dropcont);
-      filters.append(dropup);
-    }
+      for(let i = 0; i < howmany; i++){
+        var tmpid = f+i.toString();
+        const dropup = $('<div>')
+          .addClass('emoji-dropup')
+          .attr('id',tmpid);
+        if (i==1) {
+          dropup.css("pointer-events", "none");
+        }else{
+          dropup.css("pointer-events", "auto");
+        }
+        const dropbtn = $('<div>')
+          .addClass('emoji-dropbtn')
+          .html(Emoji.filters[f].i)
+          .data('mode', '99999')
+          .attr('id', 'd'+tmpid);
+        dropup.append(dropbtn);
+        const dropcont = $('<div>')
+          .addClass('emoji-dropup-content');
+        Emoji.arrfil[tmpid] = '';
+        for (let em in Emoji.filters[f]['l']) {
+          const a = $('<a>')
+            .html(Emoji.filters[f]['l'][em].i)
+            .attr('title', Emoji.filters[f]['l'][em].n)
+            .data('mode', Emoji.filters[f]['l'][em].m);
+            a.on('click', (e) => {
+            if (a.data('mode').indexOf('00000') + 1) {
+              if (dropbtn.data('mode') !== '99999') dropbtn.html(dropbtn.data('mode'));
+              dropbtn.attr('title', '');
+              dropbtn.data('mode', '99999');
+            } else {
+              if (dropbtn.data('mode') === '99999') {
+                dropbtn.data('mode', dropbtn.html());
+              }
+              dropbtn.html(a.html());
+              dropbtn.attr('title', a.attr('title'));
+              dropcont.hide();
+              dropcont.css("display", "");
+            }
+            if (a.data('mode') === '00000') {
+              Emoji.arrfil[dropup.attr('id')] = '';
+            } else {
+              Emoji.arrfil[dropup.attr('id')] = a.data('mode');
+            }
 
+              switch (dropup.attr('id')) {
+                case 'skin0':
+                  if(Emoji.arrfil[dropup.attr('id')]!==''){
+                    $('#skin1').css("pointer-events", "auto");
+                    $('#hair0').css("pointer-events", "auto");
+                    $('#gender0').css("pointer-events", "none");
+                  }else{
+                    $('#skin1').css("pointer-events", "none");
+                    $('#gender0').css("pointer-events", "auto");
+                    var butt = $('#dskin1');
+                    butt.html(butt.data('mode'));
+                    butt.data('mode','99999');
+                  }
+                  break;
+
+                case 'skin1':
+                  if(Emoji.arrfil[dropup.attr('id')]!==''){
+                    $('#hair0').css("pointer-events", "none");
+                    $('#gender0').css("pointer-events", "none");
+                    $('#gender1').css("pointer-events", "none");
+                  }else{
+                    $('#hair0').css("pointer-events", "auto");
+                  }
+                  break;
+
+                case 'hair0':
+                  if(Emoji.arrfil[dropup.attr('id')]!==''){
+                    $('#skin0').css("pointer-events", "auto");
+                    $('#skin1').css("pointer-events", "none");
+                    $('#gender0').css("pointer-events", "none");
+                    $('#gender1').css("pointer-events", "none");
+                  }else{
+                    $('#skin0').css("pointer-events", "auto");
+                    if (Emoji.arrfil["skin0"]!==''){
+                      $('#gender0').css("pointer-events", "none");
+                    }else{
+                      $('#gender0').css("pointer-events", "auto");
+                    }
+                  }
+                  break;
+
+                case 'gender0':
+                  if(Emoji.arrfil[dropup.attr('id')]!==''){
+                    $('#skin0').css("pointer-events", "none");
+                    $('#skin1').css("pointer-events", "none");
+                    $('#hair0').css("pointer-events", "none");
+                    $('#gender1').css("pointer-events", "auto");
+                  }else{
+                    $('#gender1').css("pointer-events", "none");
+                    $('#skin0').css("pointer-events", "auto");
+                    $('#hair0').css("pointer-events", "auto");
+                  }
+
+                  break;
+
+                case 'gender1':
+                  if(Emoji.arrfil[dropup.attr('id')]!==''){
+                    $('#skin0').css("pointer-events", "none");
+                    $('#skin1').css("pointer-events", "none");
+                    $('#hair0').css("pointer-events", "none");
+                  }else{
+                    $('#gender1').css("pointer-events", "none");
+                    $('#gender0').css("pointer-events", "auto");
+                  }
+                  break;
+
+                default:
+
+                  break;
+              }
+
+            var template = '';
+            if (Emoji.arrfil['skin0'] !== '') template = template + Emoji.arrfil['skin0'] + '_';
+            if (Emoji.arrfil['skin1'] !== '') template = template + Emoji.arrfil['skin1'] + '_';
+            if (Emoji.arrfil['hair0'] !== '') template = template + Emoji.arrfil['hair0'] + '_';
+            if (Emoji.arrfil['gender0'] !== '') template = template + Emoji.arrfil['gender0'] + '_';
+            if (Emoji.arrfil['gender1'] !== '') template = template + Emoji.arrfil['gender1'] + '_';
+            template = template.length > 0 ? template.slice(0, template.length - 1) : template;
+
+            alert(template);
+
+            $('#group_people_body a').each((i, el) => {
+              const $el = $(el);
+              const curIcon = $el.text();
+
+              if (!!!$el.data('icon')) {
+                $el.data('icon', curIcon);
+              }
+              const oldIcon = $el.data('icon');
+              if (template !== '') {
+                var futureIcon = Emoji.mode[template]['l'][oldIcon];
+                if (!!futureIcon && futureIcon!==curIcon) {
+                  $el.data('filter',template);
+                  $el.html(futureIcon);
+                }else{
+                  if(template.indexOf($el.data('filter'))===-1){
+                    $el.data('filter','');
+                    $el.html(oldIcon);
+                  }
+                }
+              } else {
+                $el.html(oldIcon);
+                $el.data('filter','');
+              }
+
+//              if (template !== '' && !!Emoji.mode[template]['l'][oldIcon]) {
+//                $el.html(oldIcon);
+//                $el.html(Emoji.mode[template]['l'][oldIcon]);
+//              }
+
+            //           if(template!=='') {
+            //             if (!!!oldIcon) {
+            //               $el.data('icon', curIcon);
+            //               oldIcon = $el.data('icon');
+            //             }
+            //             $el.html(oldIcon);
+            //             $el.html(Emoji.mode[template]['l'][oldIcon]);
+            //           } else {
+            //             $el.html(oldIcon);
+            //           }
+            });
+
+            e.preventDefault();
+          });
+          dropcont.append(a);
+        }
+        dropup.append(dropcont);
+        filters.append(dropup);
+      }
+    }
 //-----------------------------------------------------------------
     tabs.find('.tab-pane').not(':first-child').hide().removeClass('active');
     this.$p.append(ul).append(tabs).append(filters);
@@ -189,8 +268,6 @@ export default class EmojiPicker {
       alert(mode);
       this.cb(mode);
     }
-
-
   }
 
   // this is to show the emojis directly
