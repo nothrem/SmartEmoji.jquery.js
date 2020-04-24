@@ -145,36 +145,37 @@ ul {
     overflow-x: hidden;
     padding: 0;
   }
-
- /* &-dropup {
+// Add some filters with popup menu
+  &-dropup {
+    position: relative;
+    display: inline-block;
     a:hover {
       .emoji-dropup-content {
         display: block;
       }
     }
   }
-  &-dropup {
-    position: relative;
-    display: inline-block;
-  }
   &-dropbtn{
-      font-size: 10px;
+      font-size: 19px;
       border: none;
       outline: none;
       color: grey;
-      padding: 10px 2px;
+      padding: 2px 2px;
       background-color: inherit;
       font-family: inherit;
       margin: 0;
   }
+
   &-dropup-content{
+    border: 1px black solid;
     display: none;
     position: absolute;
     background-color: #f1f1f1;
     min-width: 30px;
-    bottom: 32px;
+    bottom: 29px;
     right: 0px;
     z-index: 1;
+
     a {
       color: black;
       padding: 3px 3px;
@@ -182,9 +183,16 @@ ul {
       display: block;
     }
     a:hover {background-color: #ccc}
-
   }
-*/
+
+  &-dropup:hover .emoji-dropup-content {
+    display: block;
+  }
+
+  &-dropup:hover .emoji-dropbtn {
+    background-color: darkgrey;
+  }
+
 }
 
 /* Bootstrap overridings */
