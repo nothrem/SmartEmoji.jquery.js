@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2f6485c94bd4a621f401"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e9cdc4728ccfbd5e27a0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1173,11 +1173,6 @@ var EmojiUtil = function () {
         EmojiUtil.filters = msg.filters;
         EmojiUtil.mode = msg.mode;
       });
-
-      //   for (let key in EmojiUtil.groups) {
-      //   alert( key );  // name, age, isAdmin
-      //   alert(EmojiUtil.groups['smileys_emotion']['l']['face_affection'].i);
-      //    }
     }
   }, {
     key: 'syncJSON',
@@ -1283,21 +1278,17 @@ var EmojiUtil = function () {
 
   return EmojiUtil;
 }();
-/*
-EmojiUtil.data = Data.data;
-EmojiUtil.groups = Data.groups;
-EmojiUtil.ascii = Data.ascii;
-
-EmojiUtil.EMOJI_UNICODE = 0;
-EmojiUtil.EMOJI_ALIASES = 1;
-*/
 
 exports.default = EmojiUtil;
+
+
 EmojiUtil.EMOJI_ICON = 'i';
 EmojiUtil.EMOJI_NAME = 'n';
 EmojiUtil.EMOJI_MODIFIER = 'm';
 EmojiUtil.EMOJI_KEYWORD = 'k';
 EmojiUtil.EMOJI_LIST = 'l';
+EmojiUtil.FILTER_BUTTON = '99999';
+EmojiUtil.FILTER_BASKET = '00000';
 
 //-----------------------------------------------------------------------------------------
 
@@ -1537,109 +1528,183 @@ var EmojiPicker = function () {
       }
       //  emoji filters------------------------------------------------
       var filters = (0, _jquery2.default)('<div>').addClass('emoji-filters');
-
-      var _loop2 = function _loop2(f) {
+      var howmany = 1;
+      for (var f in _EmojiUtil2.default.filters) {
         // f - key of the Emoji.filters
-        var dropup = (0, _jquery2.default)('<div>').addClass('emoji-dropup');
-        var dropbtn = (0, _jquery2.default)('<div>').addClass('emoji-dropbtn').html(_EmojiUtil2.default.filters[f].i).attr('mode', '99999').attr('id', f);
-        dropup.append(dropbtn);
-        var dropcont = (0, _jquery2.default)('<div>').addClass('emoji-dropup-content');
-        _EmojiUtil2.default.arrfil[f] = '';
+        if ('skin' === f || 'gender' === f) {
+          howmany = 2;
+        } else {
+          howmany = 1;
+        }
 
-        var _loop3 = function _loop3(em) {
-          var a = (0, _jquery2.default)('<a>').html(_EmojiUtil2.default.filters[f]['l'][em].i).attr('title', _EmojiUtil2.default.filters[f]['l'][em].n).attr('mode', _EmojiUtil2.default.filters[f]['l'][em].m);
-          a.on('click', function (e) {
-            if (a.attr('mode').indexOf('00000') + 1) {
-              dropbtn.html(dropbtn.attr('mode'));
-              dropbtn.attr('title', '');
-              dropbtn.attr('mode', '99999');
-            } else {
-              if (dropbtn.attr('mode') == '99999') {
-                dropbtn.attr('mode', dropbtn.html());
+        var _loop2 = function _loop2(i) {
+          tmpid = f + i.toString();
+
+          var dropup = (0, _jquery2.default)('<div>').addClass('emoji-dropup').attr('id', tmpid);
+          if (i == 1) {
+            dropup.css("pointer-events", "none");
+          } else {
+            dropup.css("pointer-events", "auto");
+          }
+          var dropbtn = (0, _jquery2.default)('<div>').addClass('emoji-dropbtn').html(_EmojiUtil2.default.filters[f].i).data('mode', _EmojiUtil2.default.FILTER_BUTTON).attr('id', 'd' + tmpid);
+          dropup.append(dropbtn);
+          var dropcont = (0, _jquery2.default)('<div>').addClass('emoji-dropup-content');
+          _EmojiUtil2.default.arrfil[tmpid] = '';
+
+          var _loop3 = function _loop3(em) {
+            var a = (0, _jquery2.default)('<a>').html(_EmojiUtil2.default.filters[f][_EmojiUtil2.default.EMOJI_LIST][em].i).attr('title', _EmojiUtil2.default.filters[f][_EmojiUtil2.default.EMOJI_LIST][em].n).data('mode', _EmojiUtil2.default.filters[f][_EmojiUtil2.default.EMOJI_LIST][em].m);
+            a.on('click', function (e) {
+              if (a.data('mode').indexOf(_EmojiUtil2.default.FILTER_BASKET) + 1) {
+                if (dropbtn.data('mode') !== _EmojiUtil2.default.FILTER_BUTTON) dropbtn.html(dropbtn.data('mode'));
+                dropbtn.attr('title', '');
+                dropbtn.data('mode', _EmojiUtil2.default.FILTER_BUTTON);
+              } else {
+                if (dropbtn.data('mode') === _EmojiUtil2.default.FILTER_BUTTON) {
+                  dropbtn.data('mode', dropbtn.html());
+                }
+                dropbtn.html(a.html());
+                dropbtn.attr('title', a.attr('title'));
               }
-              dropbtn.html(a.html());
-              dropbtn.attr('title', a.attr('title'));
-              //            dropbtn.attr('mode', a.attr('mode'));
-              dropcont.hide();
-              dropcont.css("display", "");
-              //--------------------------------------
-              //          const tabAct = $('.emoji-group tab-pane active');
-              //          for( let el in tabAct.children() ){
-              //            const $emode = $(el);
-              //            $emode.html()
-              //          }
-
-              //           let group = Emoji.groups['people_body'];
-              //            let tab = tabs[i];
-              //            for (let sg in group[Emoji.EMOJI_LIST]) {
-              //              for (let emo in group[Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST]) {
-              //                let emojiobj = group[Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
-
-              //                let emojiElem = $('<a>')
-              //                  .data('emoji', emo)
-              //            .html(EmojiArea.createEmoji(emo, this.o))
-              //                  .html(emo)
-              //                  .attr('title',emojiobj.n)
-              //                  .on('click', () => {this.insertEmoji(emo, this.o)});
-              //                $(tab).append(emojiElem);
-              //              }
-              //            }
-              //-------------------------------------
-            }
-            if (a.attr('mode') === '00000') {
-              _EmojiUtil2.default.arrfil[f] = '';
-            } else {
-              _EmojiUtil2.default.arrfil[f] = a.attr('mode');
-            }
-            var template = '';
-            if (_EmojiUtil2.default.arrfil['skin'] !== '') template = template + _EmojiUtil2.default.arrfil['skin'] + '_';
-            if (_EmojiUtil2.default.arrfil['hair'] !== '') template = template + _EmojiUtil2.default.arrfil['hair'] + '_';
-            if (_EmojiUtil2.default.arrfil['gender'] !== '') template = template + _EmojiUtil2.default.arrfil['gender'] + '_';
-            template = template.length > 0 ? template.slice(0, template.length - 1) : template;
-
-            (0, _jquery2.default)('#group_people_body a').each(function (i, el) {
-              var $el = (0, _jquery2.default)(el);
-              //            alert(i + ': ' + $el.text());
-              if (template !== '') {
-                $el.text(_EmojiUtil2.default.mode[template]['l'][$el.text()]);
-                //         } else {
-                //         $el.text(Emoji.mode[template][$el.text()]);
+              if (a.data('mode') === _EmojiUtil2.default.FILTER_BASKET) {
+                _EmojiUtil2.default.arrfil[dropup.attr('id')] = '';
+              } else {
+                _EmojiUtil2.default.arrfil[dropup.attr('id')] = a.data('mode');
               }
+
+              switch (dropup.attr('id')) {
+                case 'skin0':
+                  if (_EmojiUtil2.default.arrfil[dropup.attr('id')] !== '') {
+                    (0, _jquery2.default)('#skin1').css("pointer-events", "auto");
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "auto");
+                    (0, _jquery2.default)('#gender0').css("pointer-events", "none");
+                  } else {
+                    (0, _jquery2.default)('#skin1').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender0').css("pointer-events", "auto");
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "auto");
+                    _EmojiUtil2.default.arrfil['skin1'] = '';
+                    var butt = (0, _jquery2.default)('#dskin1');
+                    if (butt.data('mode') !== _EmojiUtil2.default.FILTER_BUTTON) {
+                      butt.html(butt.data('mode'));
+                      butt.data('mode', _EmojiUtil2.default.FILTER_BUTTON);
+                    }
+                  }
+                  break;
+
+                case 'skin1':
+                  if (_EmojiUtil2.default.arrfil[dropup.attr('id')] !== '') {
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender0').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender1').css("pointer-events", "none");
+                  } else {
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "auto");
+                  }
+                  break;
+
+                case 'hair0':
+                  if (_EmojiUtil2.default.arrfil[dropup.attr('id')] !== '') {
+                    (0, _jquery2.default)('#skin0').css("pointer-events", "auto");
+                    (0, _jquery2.default)('#skin1').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender0').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender1').css("pointer-events", "none");
+                  } else {
+                    (0, _jquery2.default)('#skin0').css("pointer-events", "auto");
+                    if (_EmojiUtil2.default.arrfil["skin0"] !== '') {
+                      (0, _jquery2.default)('#gender0').css("pointer-events", "none");
+                    } else {
+                      (0, _jquery2.default)('#gender0').css("pointer-events", "auto");
+                    }
+                  }
+                  break;
+
+                case 'gender0':
+                  if (_EmojiUtil2.default.arrfil[dropup.attr('id')] !== '') {
+                    (0, _jquery2.default)('#skin0').css("pointer-events", "none");
+                    (0, _jquery2.default)('#skin1').css("pointer-events", "none");
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender1').css("pointer-events", "auto");
+                  } else {
+                    (0, _jquery2.default)('#gender1').css("pointer-events", "none");
+                    (0, _jquery2.default)('#skin0').css("pointer-events", "auto");
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "auto");
+                    _EmojiUtil2.default.arrfil['gender1'] = '';
+                    var butt = (0, _jquery2.default)('#dgender1');
+                    if (butt.data('mode') !== _EmojiUtil2.default.FILTER_BUTTON) {
+                      butt.html(butt.data('mode'));
+                      butt.data('mode', _EmojiUtil2.default.FILTER_BUTTON);
+                    }
+                  }
+                  break;
+
+                case 'gender1':
+                  if (_EmojiUtil2.default.arrfil[dropup.attr('id')] !== '') {
+                    (0, _jquery2.default)('#skin0').css("pointer-events", "none");
+                    (0, _jquery2.default)('#skin1').css("pointer-events", "none");
+                    (0, _jquery2.default)('#hair0').css("pointer-events", "none");
+                  } else {
+                    (0, _jquery2.default)('#gender1').css("pointer-events", "none");
+                    (0, _jquery2.default)('#gender0').css("pointer-events", "auto");
+                  }
+                  break;
+                default:
+                  break;
+              }
+
+              var template = '';
+              if (_EmojiUtil2.default.arrfil['skin0'] !== '') template = template + _EmojiUtil2.default.arrfil['skin0'] + '_';
+              if (_EmojiUtil2.default.arrfil['skin1'] !== '') template = template + _EmojiUtil2.default.arrfil['skin1'] + '_';
+              if (_EmojiUtil2.default.arrfil['hair0'] !== '') template = template + _EmojiUtil2.default.arrfil['hair0'] + '_';
+              if (_EmojiUtil2.default.arrfil['gender0'] !== '') template = template + _EmojiUtil2.default.arrfil['gender0'] + '_';
+              if (_EmojiUtil2.default.arrfil['gender1'] !== '') template = template + _EmojiUtil2.default.arrfil['gender1'] + '_';
+              template = template.length > 0 ? template.slice(0, template.length - 1) : template;
+
+              (0, _jquery2.default)('#group_people_body a').each(function (i, el) {
+                var $el = (0, _jquery2.default)(el);
+                var curIcon = $el.text();
+
+                if (!!!$el.data('icon')) {
+                  $el.data('icon', curIcon);
+                }
+                var oldIcon = $el.data('icon');
+                if (template !== '') {
+                  var curFilters = template.split('_');
+                  curFilters.unshift(template);
+                  for (var j = 0; j < curFilters.length; j++) {
+                    var futureIcon = _EmojiUtil2.default.mode[curFilters[j]][_EmojiUtil2.default.EMOJI_LIST][oldIcon];
+                    if (!!futureIcon && futureIcon !== curIcon) {
+                      $el.data('filter', curFilters[j]);
+                      $el.html(futureIcon);
+                      break;
+                    } else {
+                      if (curFilters[0].indexOf($el.data('filter')) === -1) {
+                        $el.data('filter', '');
+                        $el.html(oldIcon);
+                        break;
+                      }
+                    }
+                  }
+                } else {
+                  $el.html(oldIcon);
+                  $el.data('filter', '');
+                }
+              });
+              e.preventDefault();
             });
+            dropcont.append(a);
+          };
 
-            //         element.contents().each((i, e) => {
-            //           if (e.nodeType === 1 || e.nodeType === 11) { // element or document fragment
-            //             const $e = $(e);
-            //             if (!$e.is('.emoji')) // skip emoji
-            //             {
-            //               this._processElement($e);
-            //             }
-            //           }
-
-            //          var taba =  tabAct.children();
-            //          for( let el in tabAct.children() ){
-
-            //           const $emode = $(el);
-            //          alert(el.val());
-            //          $emode.html()
-            //        }
-            //         alert(template);
-            e.preventDefault();
-          });
-          dropcont.append(a);
+          for (var em in _EmojiUtil2.default.filters[f][_EmojiUtil2.default.EMOJI_LIST]) {
+            _loop3(em);
+          }
+          dropup.append(dropcont);
+          filters.append(dropup);
         };
 
-        for (var em in _EmojiUtil2.default.filters[f]['l']) {
-          _loop3(em);
+        for (var i = 0; i < howmany; i++) {
+          var tmpid;
+
+          _loop2(i);
         }
-        dropup.append(dropcont);
-        filters.append(dropup);
-      };
-
-      for (var f in _EmojiUtil2.default.filters) {
-        _loop2(f);
       }
-
       //-----------------------------------------------------------------
       tabs.find('.tab-pane').not(':first-child').hide().removeClass('active');
       this.$p.append(ul).append(tabs).append(filters);
@@ -1671,9 +1736,7 @@ var EmojiPicker = function () {
         for (var sg in _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST]) {
           var _loop4 = function _loop4(emo) {
             var emojiobj = _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST][sg][_EmojiUtil2.default.EMOJI_LIST][emo];
-            var emojiElem = (0, _jquery2.default)('<a>').data('emoji', emo)
-            //            .html(EmojiArea.createEmoji(emo, this.o))
-            .html(emo).attr('title', emojiobj.n).on('click', function () {
+            var emojiElem = (0, _jquery2.default)('<a>').data('emoji', emo).html(emo).attr('title', emojiobj.n).on('click', function () {
               _this2.insertEmoji(emo, _this2.o);
             });
             (0, _jquery2.default)(_tab).append(emojiElem);
