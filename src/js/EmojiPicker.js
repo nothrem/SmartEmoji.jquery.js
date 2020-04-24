@@ -7,6 +7,7 @@
 import $ from 'jquery';
 import EmojiArea from 'EmojiArea';
 import Emoji from 'EmojiUtil';
+import EmojiUtil from "EmojiUtil";
 
 export default class EmojiPicker {
 
@@ -94,32 +95,30 @@ export default class EmojiPicker {
         const dropbtn = $('<div>')
           .addClass('emoji-dropbtn')
           .html(Emoji.filters[f].i)
-          .data('mode', '99999')
+          .data('mode', Emoji.FILTER_BUTTON)
           .attr('id', 'd'+tmpid);
         dropup.append(dropbtn);
         const dropcont = $('<div>')
           .addClass('emoji-dropup-content');
         Emoji.arrfil[tmpid] = '';
-        for (let em in Emoji.filters[f]['l']) {
+        for (let em in Emoji.filters[f][Emoji.EMOJI_LIST]) {
           const a = $('<a>')
-            .html(Emoji.filters[f]['l'][em].i)
-            .attr('title', Emoji.filters[f]['l'][em].n)
-            .data('mode', Emoji.filters[f]['l'][em].m);
+            .html(Emoji.filters[f][Emoji.EMOJI_LIST][em].i)
+            .attr('title', Emoji.filters[f][Emoji.EMOJI_LIST][em].n)
+            .data('mode', Emoji.filters[f][Emoji.EMOJI_LIST][em].m);
             a.on('click', (e) => {
-            if (a.data('mode').indexOf('00000') + 1) {
-              if (dropbtn.data('mode') !== '99999') dropbtn.html(dropbtn.data('mode'));
+            if (a.data('mode').indexOf(Emoji.FILTER_BASKET) + 1) {
+              if (dropbtn.data('mode') !== Emoji.FILTER_BUTTON) dropbtn.html(dropbtn.data('mode'));
               dropbtn.attr('title', '');
-              dropbtn.data('mode', '99999');
+              dropbtn.data('mode', Emoji.FILTER_BUTTON);
             } else {
-              if (dropbtn.data('mode') === '99999') {
+              if (dropbtn.data('mode') === Emoji.FILTER_BUTTON) {
                 dropbtn.data('mode', dropbtn.html());
               }
               dropbtn.html(a.html());
               dropbtn.attr('title', a.attr('title'));
-              dropcont.hide();
-              dropcont.css("display", "");
             }
-            if (a.data('mode') === '00000') {
+            if (a.data('mode') === Emoji.FILTER_BASKET) {
               Emoji.arrfil[dropup.attr('id')] = '';
             } else {
               Emoji.arrfil[dropup.attr('id')] = a.data('mode');
@@ -134,9 +133,14 @@ export default class EmojiPicker {
                   }else{
                     $('#skin1').css("pointer-events", "none");
                     $('#gender0').css("pointer-events", "auto");
+                    $('#hair0').css("pointer-events", "auto");
+                    Emoji.arrfil['skin1']='';
                     var butt = $('#dskin1');
-                    butt.html(butt.data('mode'));
-                    butt.data('mode','99999');
+                    if(butt.data('mode')!==Emoji.FILTER_BUTTON){
+                      butt.html(butt.data('mode'));
+                      butt.data('mode',Emoji.FILTER_BUTTON);
+                    }
+
                   }
                   break;
 
@@ -176,8 +180,13 @@ export default class EmojiPicker {
                     $('#gender1').css("pointer-events", "none");
                     $('#skin0').css("pointer-events", "auto");
                     $('#hair0').css("pointer-events", "auto");
+                    Emoji.arrfil['gender1']='';
+                    var butt = $('#dgender1');
+                    if(butt.data('mode')!==Emoji.FILTER_BUTTON){
+                      butt.html(butt.data('mode'));
+                      butt.data('mode',Emoji.FILTER_BUTTON);
+                    }
                   }
-
                   break;
 
                 case 'gender1':
@@ -190,9 +199,7 @@ export default class EmojiPicker {
                     $('#gender0').css("pointer-events", "auto");
                   }
                   break;
-
                 default:
-
                   break;
               }
 
@@ -204,8 +211,6 @@ export default class EmojiPicker {
             if (Emoji.arrfil['gender1'] !== '') template = template + Emoji.arrfil['gender1'] + '_';
             template = template.length > 0 ? template.slice(0, template.length - 1) : template;
 
-            alert(template);
-
             $('#group_people_body a').each((i, el) => {
               const $el = $(el);
               const curIcon = $el.text();
@@ -215,38 +220,27 @@ export default class EmojiPicker {
               }
               const oldIcon = $el.data('icon');
               if (template !== '') {
-                var futureIcon = Emoji.mode[template]['l'][oldIcon];
-                if (!!futureIcon && futureIcon!==curIcon) {
-                  $el.data('filter',template);
-                  $el.html(futureIcon);
-                }else{
-                  if(template.indexOf($el.data('filter'))===-1){
-                    $el.data('filter','');
-                    $el.html(oldIcon);
+                var curFilters = template.split('_');
+                curFilters.unshift(template);
+                for(let j = 0; j < curFilters.length; j++){
+                  var futureIcon = Emoji.mode[curFilters[j]][Emoji.EMOJI_LIST][oldIcon];
+                  if (!!futureIcon && futureIcon!==curIcon) {
+                    $el.data('filter',curFilters[j]);
+                    $el.html(futureIcon);
+                    break;
+                  }else{
+                    if(curFilters[0].indexOf($el.data('filter'))===-1){
+                      $el.data('filter','');
+                      $el.html(oldIcon);
+                      break;
+                    }
                   }
                 }
               } else {
                 $el.html(oldIcon);
                 $el.data('filter','');
               }
-
-//              if (template !== '' && !!Emoji.mode[template]['l'][oldIcon]) {
-//                $el.html(oldIcon);
-//                $el.html(Emoji.mode[template]['l'][oldIcon]);
-//              }
-
-            //           if(template!=='') {
-            //             if (!!!oldIcon) {
-            //               $el.data('icon', curIcon);
-            //               oldIcon = $el.data('icon');
-            //             }
-            //             $el.html(oldIcon);
-            //             $el.html(Emoji.mode[template]['l'][oldIcon]);
-            //           } else {
-            //             $el.html(oldIcon);
-            //           }
             });
-
             e.preventDefault();
           });
           dropcont.append(a);
@@ -281,7 +275,6 @@ export default class EmojiPicker {
           let emojiobj = Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
           let emojiElem = $('<a>')
             .data('emoji', emo)
-//            .html(EmojiArea.createEmoji(emo, this.o))
             .html(emo)
             .attr('title',emojiobj.n)
             .on('click', () => {this.insertEmoji(emo, this.o)});

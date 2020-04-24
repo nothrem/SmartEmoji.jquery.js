@@ -32,11 +32,6 @@ export default class EmojiUtil {
       EmojiUtil.filters = msg.filters;
       EmojiUtil.mode = msg.mode;
     });
-
- //   for (let key in EmojiUtil.groups) {
-      //   alert( key );  // name, age, isAdmin
-      //   alert(EmojiUtil.groups['smileys_emotion']['l']['face_affection'].i);
-//    }
   }
 
   static syncJSON(url, callback) {
@@ -123,20 +118,14 @@ export default class EmojiUtil {
   }
 
 }
-/*
-EmojiUtil.data = Data.data;
-EmojiUtil.groups = Data.groups;
-EmojiUtil.ascii = Data.ascii;
-
-EmojiUtil.EMOJI_UNICODE = 0;
-EmojiUtil.EMOJI_ALIASES = 1;
-*/
 
 EmojiUtil.EMOJI_ICON      = 'i';
 EmojiUtil.EMOJI_NAME      = 'n';
 EmojiUtil.EMOJI_MODIFIER  = 'm';
 EmojiUtil.EMOJI_KEYWORD   = 'k';
 EmojiUtil.EMOJI_LIST      = 'l';
+EmojiUtil.FILTER_BUTTON   = '99999';
+EmojiUtil.FILTER_BASKET   = '00000';
 
 //-----------------------------------------------------------------------------------------
 
