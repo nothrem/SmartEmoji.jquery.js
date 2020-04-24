@@ -83,7 +83,7 @@ textarea, .emoji-editor {
   user-select: none;
 }
 
-.emoji-dropdown {
+/*.emoji-dropdown {
   float: left;
   overflow: hidden;
 }
@@ -150,7 +150,7 @@ textarea, .emoji-editor {
   position: absolute;
   background-color: #f1f1f1;
   min-width: 30px;
-  bottom: 32px;
+  bottom: 31px;
   right: 0px;
   z-index: 1;
 }
@@ -167,8 +167,7 @@ textarea, .emoji-editor {
 .emoji-dropup:hover .emoji-dropup-content {
   display: block;
 }
+*/
 
-.emoji-dropup:hover .emoji-dropbtn {
-  background-color: darkgrey;
-}
+
 
