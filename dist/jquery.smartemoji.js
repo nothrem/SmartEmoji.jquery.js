@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e9cdc4728ccfbd5e27a0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "704d6a8430848d0ef452"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1110,8 +1110,8 @@ EmojiArea.DEFAULTS = {
   globalPicker: true,
   hideOnSelect: true,
   pickerShrink: false,
-  heightSmall: 110,
-  heightBig: 248,
+  heightSmall: 172,
+  heightBig: 202,
   pickerWidth: 280,
   tabPaneSmall: 67
 };
@@ -1164,11 +1164,16 @@ var EmojiUtil = function () {
       EmojiUtil.arrfil = [];
       var path = document.location;
       var curLang = document.documentElement.lang;
-      if (curLang.length == 2) {
+      if (curLang.length === 2) {
         curLang = 'en-US';
       }
-      var fullPath = path.origin + '/sk.ru/www/emoji/groups.en-US.json'; //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
-      EmojiUtil.syncJSON("./groups.ru-RU.json", function (msg) {
+      if (path.origin.indexOf('localhost') + 1) {
+        var fullPath = './groups.'; //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+      } else {
+        var fullPath = './../../../emoji/groups.'; //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+      }
+
+      EmojiUtil.syncJSON(fullPath + curLang + '.json', function (msg) {
         EmojiUtil.groups = msg.groups;
         EmojiUtil.filters = msg.filters;
         EmojiUtil.mode = msg.mode;
@@ -1570,6 +1575,15 @@ var EmojiPicker = function () {
               } else {
                 _EmojiUtil2.default.arrfil[dropup.attr('id')] = a.data('mode');
               }
+              dropup.mouseover(function () {
+                dropcont.show();
+              }); //#31769 To show drop-up content
+              dropup.mouseout(function () {
+                dropcont.hide();
+              }); //#31769 To hide drop-up content
+              dropup.click(function () {
+                dropcont.hide();
+              }); //#31769 To hide drop-up content
 
               switch (dropup.attr('id')) {
                 case 'skin0':
@@ -1659,7 +1673,7 @@ var EmojiPicker = function () {
 
               (0, _jquery2.default)('#group_people_body a').each(function (i, el) {
                 var $el = (0, _jquery2.default)(el);
-                var curIcon = $el.text();
+                var curIcon = $el.html();
 
                 if (!!!$el.data('icon')) {
                   $el.data('icon', curIcon);
@@ -1736,8 +1750,10 @@ var EmojiPicker = function () {
         for (var sg in _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST]) {
           var _loop4 = function _loop4(emo) {
             var emojiobj = _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST][sg][_EmojiUtil2.default.EMOJI_LIST][emo];
-            var emojiElem = (0, _jquery2.default)('<a>').data('emoji', emo).html(emo).attr('title', emojiobj.n).on('click', function () {
-              _this2.insertEmoji(emo, _this2.o);
+            var emojiElem = (0, _jquery2.default)('<a>')
+            //           .data('emoji', emo)
+            .data('icon', emo).html(emo).attr('title', emojiobj.n).on('click', function () {
+              _this2.insertEmoji(emojiElem, _this2.o);
             });
             (0, _jquery2.default)(_tab).append(emojiElem);
           };
@@ -1771,7 +1787,7 @@ var EmojiPicker = function () {
   }, {
     key: 'insertEmoji',
     value: function insertEmoji(emoji, options) {
-      if (typeof this.cb === 'function') this.cb(emoji, options);
+      if (typeof this.cb === 'function') this.cb(emoji.html(), options);
       if (options.hideOnSelect) {
         this.hide();
       }
@@ -1808,13 +1824,14 @@ var EmojiPicker = function () {
       var pickerTop = targetTop + targetH - emojwrapOFF.top;
 
       if (emojwrapOFF.left < pickerW) {
-        //       pickerLeft = - emojwrapOFF.left;  For demo page ONLY! URGENT!!
+        //        pickerLeft = -targetW;
+        pickerLeft = 0; //For demo page ONLY! URGENT!!
       }
 
       var toBottom = winH - targetH - targetTop;
       if (toBottom < pickerH) {
         if (toBottom < pickerh) {
-          pickerTop = -pickerh - (emojwrapOFF.top - targetTop);
+          pickerTop = -pickerh - (emojwrapOFF.top - targetTop) - 30;
         }
         options.pickerShrink = true;
       } else {
@@ -1844,11 +1861,11 @@ var EmojiPicker = function () {
 
       if (options.pickerShrink) {
         (0, _jquery2.default)('.tab-pane').css({
-          height: options.heightSmall - 25 + "px"
+          height: options.heightSmall - 32 + "px"
         });
       } else {
         (0, _jquery2.default)('.tab-pane').css({
-          height: options.heightBig - 30 + "px"
+          height: options.heightBig - 32 + "px"
         });
       }
 
