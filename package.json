@@ -1,6 +1,6 @@
 {
   "name": "jquery.smartemoji.js",
-  "version": "0.9.3-beta",
+  "version": "0.9.5-beta",
   "description": "Emoji text input area with emoji picker",
   "main": "dist/jquery.smartemoji.min.js",
   "license": "MIT",
