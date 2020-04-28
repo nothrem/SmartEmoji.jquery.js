@@ -277,11 +277,13 @@ export default class EmojiPicker {
         for (let emo in Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST]) {
           let emojiobj = Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
           let emojiElem = $('<a>')
- //           .data('emoji', emo)
             .data('icon', emo)
             .html(emo)
             .attr('title',emojiobj.n)
             .on('click', () => {this.insertEmoji(emojiElem, this.o)});
+ //         if (emojiElem.html().length>3){
+ //           emojiElem.addClass('double');
+ //         }
           $(tab).append(emojiElem);
         }
       }
@@ -353,8 +355,8 @@ export default class EmojiPicker {
     }
 
     var toBottom =  winH - targetH - targetTop;
-    if (toBottom<pickerH) {
-       if (toBottom<pickerh) {
+    if (toBottom<pickerH+32) {
+       if (toBottom<pickerh+32) {
           pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
        }
        options.pickerShrink = true;

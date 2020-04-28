@@ -312,7 +312,7 @@ EmojiArea.DEFAULTS = {
   globalPicker: true,
   hideOnSelect: true,
   pickerShrink: false,
-  heightSmall:    172,
+  heightSmall:    122,
   heightBig:      202,
   pickerWidth:    280,
   tabPaneSmall:   67,
