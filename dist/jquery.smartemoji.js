@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "704d6a8430848d0ef452"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1b17643583711e6149cd"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1110,7 +1110,7 @@ EmojiArea.DEFAULTS = {
   globalPicker: true,
   hideOnSelect: true,
   pickerShrink: false,
-  heightSmall: 172,
+  heightSmall: 122,
   heightBig: 202,
   pickerWidth: 280,
   tabPaneSmall: 67
@@ -1750,11 +1750,12 @@ var EmojiPicker = function () {
         for (var sg in _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST]) {
           var _loop4 = function _loop4(emo) {
             var emojiobj = _EmojiUtil2.default.groups[g][_EmojiUtil2.default.EMOJI_LIST][sg][_EmojiUtil2.default.EMOJI_LIST][emo];
-            var emojiElem = (0, _jquery2.default)('<a>')
-            //           .data('emoji', emo)
-            .data('icon', emo).html(emo).attr('title', emojiobj.n).on('click', function () {
+            var emojiElem = (0, _jquery2.default)('<a>').data('icon', emo).html(emo).attr('title', emojiobj.n).on('click', function () {
               _this2.insertEmoji(emojiElem, _this2.o);
             });
+            //         if (emojiElem.html().length>3){
+            //           emojiElem.addClass('double');
+            //         }
             (0, _jquery2.default)(_tab).append(emojiElem);
           };
 
@@ -1829,8 +1830,8 @@ var EmojiPicker = function () {
       }
 
       var toBottom = winH - targetH - targetTop;
-      if (toBottom < pickerH) {
-        if (toBottom < pickerh) {
+      if (toBottom < pickerH + 32) {
+        if (toBottom < pickerh + 32) {
           pickerTop = -pickerh - (emojwrapOFF.top - targetTop) - 30;
         }
         options.pickerShrink = true;
