@@ -23,11 +23,16 @@ export default class EmojiUtil {
     EmojiUtil.arrfil = [];
     var path = document.location;
     var curLang = document.documentElement.lang;
-    if(curLang.length==2){
+    if(curLang.length===2){
       curLang='en-US';
     }
-    var   fullPath = path.origin + '/sk.ru/www/emoji/groups.en-US.json';  //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
-    EmojiUtil.syncJSON("./groups.ru-RU.json", function (msg) {
+    if (path.origin.indexOf('localhost')+1){
+      var   fullPath = './groups.';  //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+    } else {
+      var   fullPath = './../../../emoji/groups.';  //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+    }
+
+    EmojiUtil.syncJSON(fullPath+curLang+'.json', function (msg) {
       EmojiUtil.groups = msg.groups;
       EmojiUtil.filters = msg.filters;
       EmojiUtil.mode = msg.mode;

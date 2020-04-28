@@ -123,6 +123,9 @@ export default class EmojiPicker {
             } else {
               Emoji.arrfil[dropup.attr('id')] = a.data('mode');
             }
+              dropup.mouseover(function(){dropcont.show();});   //#31769 To show drop-up content
+              dropup.mouseout(function(){dropcont.hide();});   //#31769 To hide drop-up content
+              dropup.click(function(){dropcont.hide();});      //#31769 To hide drop-up content
 
               switch (dropup.attr('id')) {
                 case 'skin0':
@@ -213,7 +216,7 @@ export default class EmojiPicker {
 
             $('#group_people_body a').each((i, el) => {
               const $el = $(el);
-              const curIcon = $el.text();
+              const curIcon = $el.html();
 
               if (!!!$el.data('icon')) {
                 $el.data('icon', curIcon);
@@ -274,10 +277,11 @@ export default class EmojiPicker {
         for (let emo in Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST]) {
           let emojiobj = Emoji.groups[g][Emoji.EMOJI_LIST][sg][Emoji.EMOJI_LIST][emo];
           let emojiElem = $('<a>')
-            .data('emoji', emo)
+ //           .data('emoji', emo)
+            .data('icon', emo)
             .html(emo)
             .attr('title',emojiobj.n)
-            .on('click', () => {this.insertEmoji(emo, this.o)});
+            .on('click', () => {this.insertEmoji(emojiElem, this.o)});
           $(tab).append(emojiElem);
         }
       }
@@ -305,7 +309,7 @@ export default class EmojiPicker {
 
   insertEmoji(emoji, options) {
     if (typeof this.cb === 'function')
-      this.cb(emoji, options);
+      this.cb(emoji.html(), options);
     if (options.hideOnSelect){
         this.hide();
     }
@@ -344,13 +348,14 @@ export default class EmojiPicker {
     var pickerTop =  targetTop + targetH - emojwrapOFF.top;
 
     if (emojwrapOFF.left<pickerW){
- //       pickerLeft = - emojwrapOFF.left;  For demo page ONLY! URGENT!!
+//        pickerLeft = -targetW;
+        pickerLeft = 0;        //For demo page ONLY! URGENT!!
     }
 
     var toBottom =  winH - targetH - targetTop;
     if (toBottom<pickerH) {
        if (toBottom<pickerh) {
-          pickerTop = - pickerh-(emojwrapOFF.top-targetTop);
+          pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
        }
        options.pickerShrink = true;
     } else {
@@ -379,11 +384,11 @@ export default class EmojiPicker {
 
     if (options.pickerShrink){
         $('.tab-pane').css({
-              height: options.heightSmall-25 + "px",
+              height: options.heightSmall-32 + "px",
             });
     } else {
         $('.tab-pane').css({
-          height: options.heightBig-30+"px",
+          height: options.heightBig-32+"px",
         });
     }
 
