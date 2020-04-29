@@ -41,7 +41,7 @@ export default class EmojiUtil {
 
   static syncJSON(url, callback) {
     $.ajax({
-      type: "POST",
+      type: "GET",
       async: false,
       url: url,
       contentType: "application/json",
