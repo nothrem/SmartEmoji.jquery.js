@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1b17643583711e6149cd"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ef194d29ed5b0b71294f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1183,7 +1183,7 @@ var EmojiUtil = function () {
     key: 'syncJSON',
     value: function syncJSON(url, callback) {
       $.ajax({
-        type: "POST",
+        type: "GET",
         async: false,
         url: url,
         contentType: "application/json",
