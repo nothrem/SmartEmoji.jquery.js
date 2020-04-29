@@ -347,22 +347,53 @@ export default class EmojiPicker {
         pickerLeft = ($emojwrap.width()-pickerW)/2;
     }
 
-    var pickerTop =  targetTop + targetH - emojwrapOFF.top;
+//    if (targetLeft<pickerW){
+        pickerLeft = -targetW-26;
+ //       pickerLeft = 0;        //For demo page ONLY! URGENT!!
+ //   }else{
+ //       pickerLeft = ($emojwrap.width()-pickerW)/2;
+//    }
 
-    if (emojwrapOFF.left<pickerW){
-//        pickerLeft = -targetW;
-        pickerLeft = 0;        //For demo page ONLY! URGENT!!
+    switch (options.place) {
+      case 'top':
+//        var pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
+        var pickerTop = - options.heightBig-30-(targetH-$emojwrap.height())/2;
+        options.pickerShrink = false;
+        break;
+
+      case 'bottom':
+        var pickerTop =  targetTop + targetH - emojwrapOFF.top;
+        options.pickerShrink = false;
+        break;
+
+      case 'center':
+        pickerLeft = ($emojwrap.width()-pickerW)/2;
+        var pickerTop =  targetTop + targetH - emojwrapOFF.top;
+        var toBottom =  winH - targetH - targetTop;
+        if (toBottom<pickerH+32) {
+          if (toBottom<pickerh+32) {
+            pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
+          }
+          options.pickerShrink = true;
+        } else {
+          options.pickerShrink = false;
+        }
+        break;
+
+      default:
+        var pickerTop =  targetTop + targetH - emojwrapOFF.top;
+        var toBottom =  winH - targetH - targetTop;
+        if (toBottom<pickerH+32) {
+          if (toBottom<pickerh+32) {
+            pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
+          }
+          options.pickerShrink = true;
+        } else {
+          options.pickerShrink = false;
+        }
+        break;
     }
 
-    var toBottom =  winH - targetH - targetTop;
-    if (toBottom<pickerH+32) {
-       if (toBottom<pickerh+32) {
-          pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
-       }
-       options.pickerShrink = true;
-    } else {
-      options.pickerShrink = false;
-    }
 
     this.$p.css({
         top:  pickerTop.toFixed(0)+"px",

@@ -26,10 +26,13 @@ export default class EmojiUtil {
     if(curLang.length===2){
       curLang='en-US';
     }
-    if (path.origin.indexOf('localhost')+1){
-      var   fullPath = './groups.';  //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+
+    if (path.origin.indexOf('admin')+1) {
+      var   fullPath = './../../../../../emoji/groups.';  //    for CA
+    }else if(path.origin.indexOf('localhost')+1){
+      var   fullPath = './groups.';                       //    for stand-alone
     } else {
-      var   fullPath = './../../../emoji/groups.';  //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+      var   fullPath = './../../../emoji/groups.';        //    for MA
     }
 
     EmojiUtil.syncJSON(fullPath+curLang+'.json', function (msg) {
