@@ -62,7 +62,7 @@ var SmartEmoji =
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1b17643583711e6149cd"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "1a4fb1e8ed224607ba43"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -1109,6 +1109,7 @@ EmojiArea.DEFAULTS = {
   textClipboard: true,
   globalPicker: true,
   hideOnSelect: true,
+  place: "auto",
   pickerShrink: false,
   heightSmall: 122,
   heightBig: 202,
@@ -1167,10 +1168,13 @@ var EmojiUtil = function () {
       if (curLang.length === 2) {
         curLang = 'en-US';
       }
-      if (path.origin.indexOf('localhost') + 1) {
-        var fullPath = './groups.'; //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+
+      if (path.origin.indexOf('admin') + 1) {
+        var fullPath = './../../../../../emoji/groups.'; //    for CA
+      } else if (path.origin.indexOf('localhost') + 1) {
+        var fullPath = './groups.'; //    for stand-alone
       } else {
-        var fullPath = './../../../emoji/groups.'; //    $.getJSON('./../../sk.ru/www/emoji/groups.en-US.json'
+        var fullPath = './../../../emoji/groups.'; //    for MA
       }
 
       EmojiUtil.syncJSON(fullPath + curLang + '.json', function (msg) {
@@ -1183,7 +1187,7 @@ var EmojiUtil = function () {
     key: 'syncJSON',
     value: function syncJSON(url, callback) {
       $.ajax({
-        type: "POST",
+        type: "GET",
         async: false,
         url: url,
         contentType: "application/json",
@@ -1822,21 +1826,51 @@ var EmojiPicker = function () {
         pickerLeft = ($emojwrap.width() - pickerW) / 2;
       }
 
-      var pickerTop = targetTop + targetH - emojwrapOFF.top;
+      //    if (targetLeft<pickerW){
+      pickerLeft = -targetW - 26;
+      //       pickerLeft = 0;        //For demo page ONLY! URGENT!!
+      //   }else{
+      //       pickerLeft = ($emojwrap.width()-pickerW)/2;
+      //    }
 
-      if (emojwrapOFF.left < pickerW) {
-        //        pickerLeft = -targetW;
-        pickerLeft = 0; //For demo page ONLY! URGENT!!
-      }
+      switch (options.place) {
+        case 'top':
+          //        var pickerTop = - pickerh-(emojwrapOFF.top-targetTop)-30;
+          var pickerTop = -options.heightBig - 30 - (targetH - $emojwrap.height()) / 2;
+          options.pickerShrink = false;
+          break;
 
-      var toBottom = winH - targetH - targetTop;
-      if (toBottom < pickerH + 32) {
-        if (toBottom < pickerh + 32) {
-          pickerTop = -pickerh - (emojwrapOFF.top - targetTop) - 30;
-        }
-        options.pickerShrink = true;
-      } else {
-        options.pickerShrink = false;
+        case 'bottom':
+          var pickerTop = targetTop + targetH - emojwrapOFF.top;
+          options.pickerShrink = false;
+          break;
+
+        case 'center':
+          pickerLeft = ($emojwrap.width() - pickerW) / 2;
+          var pickerTop = targetTop + targetH - emojwrapOFF.top;
+          var toBottom = winH - targetH - targetTop;
+          if (toBottom < pickerH + 32) {
+            if (toBottom < pickerh + 32) {
+              pickerTop = -pickerh - (emojwrapOFF.top - targetTop) - 30;
+            }
+            options.pickerShrink = true;
+          } else {
+            options.pickerShrink = false;
+          }
+          break;
+
+        default:
+          var pickerTop = targetTop + targetH - emojwrapOFF.top;
+          var toBottom = winH - targetH - targetTop;
+          if (toBottom < pickerH + 32) {
+            if (toBottom < pickerh + 32) {
+              pickerTop = -pickerh - (emojwrapOFF.top - targetTop) - 30;
+            }
+            options.pickerShrink = true;
+          } else {
+            options.pickerShrink = false;
+          }
+          break;
       }
 
       this.$p.css({

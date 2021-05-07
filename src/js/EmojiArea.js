@@ -311,6 +311,7 @@ EmojiArea.DEFAULTS = {
   textClipboard: true,
   globalPicker: true,
   hideOnSelect: true,
+  place: "auto",
   pickerShrink: false,
   heightSmall:    122,
   heightBig:      202,
